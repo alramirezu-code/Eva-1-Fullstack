@@ -1,0 +1,13 @@
+body{
+    font-family: Arial;
+    text-align: center;
+    background-color: #8913ce;
+}
+
+button:hover{
+    transform: scale(1.05);
+}
+
+.mb-3{
+    width: 250px;
+}
