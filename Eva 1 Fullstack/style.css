@@ -11,3 +11,40 @@ button:hover{
 .mb-3{
     width: 250px;
 }
+
+
+
+
+.contenedor-productos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.producto {
+    background-color: #6b46ef;
+    border: 1px solid #2a1fa4;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0.3s;
+    width: 240px;
+}
+
+.producto:hover {
+    transform: translateY(-5px);
+    border-color: #00d9ff;
+}
+
+.producto img {
+    width: 100%;
+    height: 240px;
+    object-fit: contain;
+    background-color: white;
+    display: block;
+}
+
+.producto-info {
+    padding: 20px;
+}
