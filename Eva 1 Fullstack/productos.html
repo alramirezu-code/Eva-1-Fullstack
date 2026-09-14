@@ -37,11 +37,35 @@
             </div>
         </div>
     </nav>
+    <main>
+        <!-- Toast de Notificación Flotante -->
+            <div id="toast-notificacion" class="toast-oculto">
+                <span id="toast-icono">🛒</span>
+                <span id="toast-mensaje">Producto agregado al carrito</span>
+            </div> 
 
-    <section id="catalogo">
-        <h2>Catálogo de productos</h2>
-         <p id="contenedorProductos"></p>
-    </section> 
+
+            <h2>Catálogo de productos</h2>
+            <section id="vista-productos" class="catalogo">
+                <article class="producto">
+                    <img src="img/Concertina_Alambre_Puas.webp" alt="Alambre de púas" class="producto-imagen">
+                        <div class="producto-info">
+                            <p class="categoria-producto">utiles</p>
+                            <h3>Alambre de púas</h3>
+                            <p class="precio">$1.500</p>
+                            <button class="boton-carrito">Agregar al carrito</button>
+                        </div>
+                </article>
+            </section>
+            <!-- Seccion Carrito de Compras -->
+            <section id="vista-carrito" class="carrito" style="display: none;">
+                <h2>🛒 Tu Carrito de Compras</h2>
+                <div id="lista-carrito"></div>
+                <div id="resumen-carrito"></div>
+            </section>
+    </main>
+
+
     <script src="script.js"></script>
 </body>
 </html>
