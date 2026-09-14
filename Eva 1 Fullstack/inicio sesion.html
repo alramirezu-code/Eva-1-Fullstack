@@ -9,79 +9,80 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="productos.html">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="inicio sesion.html">Iniciar Sesion</a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#">placeholder</a>
-                    </li>
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                        <button class="btn btn-outline-success" type="submit">Buscar</button>
-                    </form>
-                </ul>
+    <main>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="productos.html">Productos</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="inicio sesion.html">Iniciar Sesion</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="#">placeholder</a>
+                        </li>
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                            <button class="btn btn-outline-success" type="submit">Buscar</button>
+                        </form>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <form id="form-inicioSesion">
-        
-        <div class="mb-3">
-            <label for="exampleInputNombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre">
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputEmail" class="form-label">Correo electronico</label>
-            <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">Su correo es privado y no se mostrara a nadie externo.</div>
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputClave" class="form-label">Clave</label>
-            <input type="password" class="form-control" id="exampleInputClave">
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Checar</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Ingresar</button>
-    </form>
+        <form id="form-inicioSesion">
+            
+            <div class="mb-3">
+                <label for="exampleInputNombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="nombre">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail" class="form-label">Correo electronico</label>
+                <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">Su correo es privado y no se mostrara a nadie externo.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputClave" class="form-label">Clave</label>
+                <input type="password" class="form-control" id="exampleInputClave">
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Checar</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Ingresar</button>
+        </form>
 
-    <form id="form-Registrarse">
-        <h3 class="mb-3">Crear cuenta</h3>
-        <div class="mb-3">
-            <label for="RegistrarNombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="RegistrarNombre" required>
-        </div>
-        <div class="mb-3">
-            <label for="RegistrarCorreo" class="form-label">Correo electronico</label>
-            <input type="email" class="form-control" id="RegistrarCorreo" aria-describedby="emailHelpRegister" required>
-            <div id="emailHelpRegister" class="form-text">Su correo es privado y no se mostrara a nadie externo.</div>
-        </div>
-        <div class="mb-3">
-            <label for="RegistrarClave" class="form-label">Clave</label>
-            <input type="password" class="form-control" id="RegistrarClave" required>
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="RegistrarCheck" required>
-            <label class="form-check-label" for="RegistrarCheck">Checar</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Registrarse</button>
-    </form>
-
+        <form id="form-Registrarse">
+            <h3 class="mb-3">Crear cuenta</h3>
+            <div class="mb-3">
+                <label for="RegistrarNombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="RegistrarNombre" required>
+            </div>
+            <div class="mb-3">
+                <label for="RegistrarCorreo" class="form-label">Correo electronico</label>
+                <input type="email" class="form-control" id="RegistrarCorreo" aria-describedby="emailHelpRegister" required>
+                <div id="emailHelpRegister" class="form-text">Su correo es privado y no se mostrara a nadie externo.</div>
+            </div>
+            <div class="mb-3">
+                <label for="RegistrarClave" class="form-label">Clave</label>
+                <input type="password" class="form-control" id="RegistrarClave" required>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="RegistrarCheck" required>
+                <label class="form-check-label" for="RegistrarCheck">Checar</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+        </form>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
