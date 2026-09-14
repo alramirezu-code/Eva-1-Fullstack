@@ -164,7 +164,6 @@ function mostrarToast(mensaje, icono = "🛒") {
     }, 3000);
 }
 
-<<<<<<< HEAD
 function obtenerCarrito() {
     try {
         return JSON.parse(localStorage.getItem("carrito")) || [];
@@ -226,51 +225,6 @@ function mostrarCarrito() {
             </div>
         `;
     }
-=======
-function mostrarCatalogo() {
-    const contenedor =
-        document.getElementById("contenedorProductos");
-
-    if (!contenedor) {
-    return;
-    }
-
-    contenedor.innerHTML = "";
-
-    const todosLosProductos = productosFijos.concat(productos);
-
-    todosLosProductos.forEach((producto) => {
-        const tarjeta = document.createElement("div");
-        tarjeta.className = "col-md-3 product-card";
-        tarjeta.dataset.fecha = producto.fechaOferta;
-        tarjeta.dataset.descuento = producto.descuento;
-
-        tarjeta.innerHTML = `
-            <div class="card">
-                <img src="${producto.imagen || "img/producto_default.jpg"}"
-                    class="card-img-top"
-                    alt="${producto.nombre}">
-
-                <div class="card-body">
-                    <h5>${producto.nombre}</h5>
-                    <p class="precio">$${producto.precio}</p>
-                    <p>Categoría: ${producto.categoria || "Sin categoría"}</p>
-                    <p class="oferta" hidden></p>
-
-                    <button type="button"
-                            class="btn btn-primary btn-carrito">
-                        Comprar
-                    </button>
-                </div>
-            </div>
-        `;
-
-        contenedor.appendChild(tarjeta);
-    });
-
-    activarBotonesComprar();
-    actualizarProductos();
->>>>>>> 5adbfa0961cd50cf1ac14a3ff83eca704ff6b247
 }
     
 
@@ -385,4 +339,4 @@ function mostrarVista(vista) {
 
 document.addEventListener("DOMContentLoaded", () => {
     mostrarCatalogo();
-});
+}); 
