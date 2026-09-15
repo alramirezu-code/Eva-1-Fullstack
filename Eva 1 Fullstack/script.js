@@ -3,79 +3,6 @@ const productos =
 
 const carrito =
     JSON.parse(localStorage.getItem("carrito")) || [];
-<<<<<<< HEAD
-=======
-
-const productosFijos = [
-    {
-        nombre: "Set de herramientas manuales",
-        precio: 16500,
-        imagen: "img/Set Herramientas.webp",
-        descuento: 20,
-        fechaOferta: "2026-09-08"
-    },
-    {
-        nombre: "Concertina Alambre Púas",
-        precio: 15000,
-        imagen: "img/Concertina_Alambre_Puas.webp",
-        descuento: 15,
-        fechaOferta: "2026-09-08"
-    },
-    {
-        nombre: "Rollo aislante aluminio 1,20 m x 10 m",
-        precio: 6990,
-        imagen: "img/Rollo_aislante_aluminio.webp",
-        descuento: 25,
-        fechaOferta: "2026-09-08"
-    },
-    {
-        nombre: "Panel PVC con revestimiento de metal",
-        precio: 5750,
-        imagen: "img/Panel_Pvc.webp",
-        descuento: 10,
-        fechaOferta: "2026-09-10"
-    },
-    {
-        nombre: "Panel metal con revestimiento de madera",
-        precio: 8500,
-        imagen: "img/Panel_metal_look_madera.webp",
-        descuento: 20,
-        fechaOferta: "2026-09-11"
-    },
-    {
-        nombre: "Plancha de yeso cartón",
-        precio: 9990,
-        imagen: "img/Plancha_yeso_carton.webp",
-        descuento: 15,
-        fechaOferta: "2026-09-12"
-    },
-    {
-        nombre: "Pegamento para madera",
-        precio: 7000,
-        imagen: "img/Pegamento_para_Madera.webp",
-        descuento: 10,
-        fechaOferta: "2026-09-13"
-    },
-    {
-        nombre: "Taladro atornillador",
-        precio: 15500,
-        imagen: "img/Taladro.webp",
-        descuento: 30,
-        fechaOferta: "2026-09-14"
-    },
-    {
-        nombre: "Mortero impermeabilizante 500 g",
-        precio: 12750,
-        imagen: "img/Mortero_Impermeabilizante.webp",
-        descuento: 20,
-        fechaOferta: "2026-09-15"
-    }
-];
-
-function guardarCarrito() {
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-}
->>>>>>> 5adbfa0961cd50cf1ac14a3ff83eca704ff6b247
 
 const productosFijos = [
     {
@@ -340,3 +267,46 @@ function mostrarVista(vista) {
 document.addEventListener("DOMContentLoaded", () => {
     mostrarCatalogo();
 }); 
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("boton-carrito")) {
+            const tarjeta = e.target.closest(".producto");
+            if (!tarjeta) return;
+
+            const elNombre = tarjeta.querySelector("h3");
+            const elPrecio = tarjeta.querySelector(".precio");
+            const elImagen = tarjeta.querySelector("img");
+
+            const nombre = elNombre ? elNombre.textContent.trim() : "Producto Gamer";
+            let precioNum = 0;
+            if (elPrecio) {
+                precioNum = Number(elPrecio.textContent.replace(/[^0-9]/g, "")) || 0;
+            }
+            const imagen = elImagen ? elImagen.getAttribute("src") : "";
+
+            const producto = {
+                nombre: nombre,
+                precio: precioNum,
+                imagen: imagen,
+                cantidad: 1
+            };
+
+            let carrito = obtenerCarrito();
+            const existe = carrito.find(item => item.nombre === nombre);
+
+            if (existe) {
+                existe.cantidad++;
+            } else {
+                carrito.push(producto);
+            }
+
+            guardarCarrito(carrito);
+            
+            // Notificación Flotante Estilizada (remplazó al alert)
+            mostrarToast(`¡${nombre} agregado al carrito!`, "🛒");
+        }
+    })});
