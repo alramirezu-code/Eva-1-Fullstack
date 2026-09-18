@@ -1,24 +1,44 @@
-body{
-    font-family: Arial;
+body {
+    font-family: Arial, sans-serif;
     text-align: center;
     background-color: #8913ce;
+    color: #ffffff; /* Texto general blanco para mejor contraste */
+    margin: 0;
+    padding: 0;
 }
 
-button:hover{
+section {
+    padding: 40px 5%;
+}
+
+section h2 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 25px;
+    color: #ffffff;
+}
+
+button:hover {
     transform: scale(1.05);
+    cursor: pointer;
 }
 
-.mb-3{
-    width: 250px;
+.descripcion {
+    text-align: center;
+    color: #e0e0e0;
+    margin-bottom: 40px;
 }
 
-
+/* ==========================================
+   CATÁLOGO DE PRODUCTOS
+   ========================================== */
 .contenedor-productos {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 30px;
     max-width: 1200px;
-    margin: auto;
+    margin: 0 auto;
 }
 
 .producto {
@@ -26,45 +46,164 @@ button:hover{
     border: 1px solid #2a1fa4;
     border-radius: 10px;
     overflow: hidden;
-    transition: 0.3s;
-    width: 240px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
 }
 
 .producto:hover {
     transform: translateY(-5px);
-    border-color: #00d9ff;
+    border-color: #ffffff;
 }
 
 .producto img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover; 
+    background-color: #ffffff;
     display: block;
-    max-width: 100%;
-    height: 180px; 
-    object-fit: contain;
-
-    margin-left: auto;
-    margin-right: auto;
 }
-
 .producto-info {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
 }
 
-section {
-    padding: 70px 8%;
+.categoria-producto {
+    color: #cfa3d8;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 8px;
 }
 
-section h2 {
-    text-align: center;
-    font-size: 32px;
+.producto h3 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    color: #ffffff;
+}
+
+.producto-info > p:not(.categoria-producto):not(.precio) {
+    color: #d1c4e9;
+    line-height: 1.4;
+}
+
+.precio {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #ffffff;
+}
+
+/* Botón de agregar al carrito dentro de la tarjeta */
+.boton-carrito {
+    background-color: #2a1fa4;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.boton-carrito:hover {
+    background-color: #1a1269;
+}
+
+/* ==========================================
+   VISTA CARRITO DE COMPRAS
+   ========================================== */
+.carrito {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #6b46ef;
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid #2a1fa4;
+    color: #ffffff;
+}
+
+.producto-carrito {
+    background-color: #5533c7;
+    border: 1px solid #2a1fa4;
+    border-radius: 8px;
+    padding: 15px;
     margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    text-align: left;
 }
 
-.descripcion {
-    text-align: center;
-    color: #999;
-    margin-bottom: 40px;
+.producto-carrito img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    background-color: #ffffff;
+    border-radius: 6px;
 }
 
+.informacion-carrito h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+}
+
+.informacion-carrito p {
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.cantidad button {
+    background-color: #2a1fa4;
+    color: #ffffff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+}
+
+.cantidad span {
+    padding: 0 8px;
+    font-weight: bold;
+}
+
+.boton-eliminar {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+.total-carrito {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #2a1fa4;
+}
+
+.boton-vaciar {
+    background-color: #757575;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+.boton-finalizar {
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
+
+/* ==========================================
+   CATEGORÍAS SECUNDARIAS
+   ========================================== */
 .categorias {
     background-color: #151515;
 }
@@ -101,60 +240,9 @@ section h2 {
     color: #999;
 }
 
-
-
-.contenedor-productos {
-    display: grid;
-    grid-template-columns: repeat(3, 0.3fr);
-    gap: 30px;
-    max-width: 1200px;
-    max-height: 100px;
-    margin: auto;
-}
-
-
-.producto:hover {
-    transform: translateY(-5px);
-    border-color: #ffffff;
-}
-
-.producto img {
-    width: 100%;
-    height: 235px;
-    object-fit: contain;
-    background-color: white;
-    display: block;
-}
-
-.producto-info {
-    padding: 20px;
-}
-
-.categoria-producto {
-    color: #cfa3d8;
-    font-size: 13px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-}
-
-.producto h3 {
-    font-size: 22px;
-    margin-bottom: 10px;
-}
-
-.producto-info > p:not(.categoria-producto):not(.precio) {
-    color: #999;
-    line-height: 1.5;
-    min-height: 70px;
-}
-
-.precio {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 15px 0;
-}
-
+/* ==========================================
+   TOAST NOTIFICACIÓN
+   ========================================== */
 #toast-notificacion {
     position: fixed;
     bottom: 30px;
@@ -165,7 +253,7 @@ section h2 {
     border-left: 6px solid #ffffff;
     padding: 16px 24px;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -174,7 +262,6 @@ section h2 {
     font-weight: 600;
     z-index: 9999;
     
-    /* Animación de entrada/salida */
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);

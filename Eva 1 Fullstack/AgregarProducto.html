@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+                <a class="navbar-brand" href="#">Navbar</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="productos.html">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="inicio sesion.html">Iniciar Sesion</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#">placeholder</a>
+                    </li>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <button class="btn btn-outline-success" type="submit">Buscar</button>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+            <h1> Agregar Producto</h1>
+            <section>
+                <form id = "formProducto">
+                    <div class="campo">
+                        <label for="imagen">Imagen</label>
+                        <input
+                            type="text"
+                            id="imagen"
+                            name="imagen"
+                            placeholder="Ej: img/producto.webp">
+                    </div>
+
+                    <div class = "campo">
+                        <label for="codigo"></label>
+                        <input 
+                        type="text"
+                        id="codigo"
+                        name="codigo"
+                        placeholder="Ingrese Codigo">
+                        <span id="errorCodigo" class = "error"></span>
+                    </div>
+                    <div class = "campo">
+                        <label for="nombre">Nombre</label>
+                        <input 
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        placeholder="Ingrese nombre">
+                        <span id="errorNombre" class = "error"></span>
+                    </div>
+                    <div class = "campo">
+                        <label for="categoria">Categoria</label>
+                        <select id="categoria" name="categoria">
+                            <option value="">Seleccione una categoria</option>
+                            <option value="materiales">Materiales</option>
+                            <option value="herramientas">Herramientas</option>
+                            <option value="misceláneo">Misceláneo</option>
+                        </select>
+                        <span id="errorCategoria" class = "error"></span>
+                    </div>
+                    <div class = "campo">
+                        <label for="precio">Precio</label>
+                        <input 
+                        type="number"
+                        id="precio"
+                        name="precio"
+                        placeholder="Ingrese precio">
+                        <span id="errorPrecio" class = "error"></span>
+                    </div>
+                    <div class = "campo">
+                        <label for="descuento">Descuento</label>
+                        <input 
+                        type="number"
+                        id="descuento"
+                        name="descuento"
+                        placeholder="Ingrese descuento">
+                        <span id="errordescuento" class = "error"></span>
+                        <span id="warningdescuento" class = "warning"></span>
+                    </div>
+                    <div class = "campo">
+                        <label for="descuento">DescuentoDia</label>
+                        <input 
+                        type="date"
+                        id="descuentodia"
+                        name="descuentodia"
+                        placeholder="Ingrese descuentodia">
+                        <span id="errordescuentodia" class = "error"></span>
+                    </div>
+                    <button type = "submit" class = "agregarProducto">
+                        Agregar Producto
+                    </button> 
+                </form>
+                <div id="mensaje" class="exito"></div>
+            </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

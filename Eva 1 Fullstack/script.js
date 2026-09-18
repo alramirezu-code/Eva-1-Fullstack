@@ -71,9 +71,12 @@ const productosFijos = [
 ];
 
 // ==========================================
-// 2. LÓGICA DEL CARRITO DE COMPRAS
+// LÓGICA DEL CARRITO DE COMPRAS
 // ==========================================
 
+// ==========================================
+// TOAST NOTIFICACIÓN
+// ==========================================
 function mostrarToast(mensaje, icono = "🛒") {
     const toast = document.getElementById("toast-notificacion");
     const toastMensaje = document.getElementById("toast-mensaje");
@@ -91,6 +94,9 @@ function mostrarToast(mensaje, icono = "🛒") {
     }, 3000);
 }
 
+// ==========================================
+// LÓGICA DEL CARRITO (LOCALSTORAGE)
+// ==========================================
 function obtenerCarrito() {
     try {
         return JSON.parse(localStorage.getItem("carrito")) || [];
@@ -114,10 +120,10 @@ function mostrarCarrito() {
 
     if (carrito.length === 0) {
         listaCarrito.innerHTML = `
-            <div class="carrito-vacio">
+            <div class="carrito-vacio my-4">
                 <h3>Tu carrito está vacío.</h3>
                 <p>Agrega productos desde nuestro catálogo para continuar.</p>
-                <button class="boton" onclick="cambiarSeccion('productos')">Ver productos</button>
+                <button class="btn btn-primary" onclick="mostrarVista('productos')">Ver productos</button>
             </div>
         `;
         return;
@@ -125,19 +131,19 @@ function mostrarCarrito() {
 
     carrito.forEach((prod, i) => {
         const item = document.createElement("article");
-        item.classList.add("producto-carrito");
+        item.classList.add("producto-carrito", "d-flex", "align-items-center", "mb-3", "p-2", "border", "rounded");
         item.innerHTML = `
-            <img src="${prod.imagen}" alt="${prod.nombre}">
-            <div class="informacion-carrito">
-                <h3>${prod.nombre}</h3>
-                <p>$${prod.precio.toLocaleString("es-CL")}</p>
-                <div class="cantidad">
-                    <button onclick="cambiarCantidad(${i}, -1)">-</button>
+            <img src="${prod.imagen}" alt="${prod.nombre}" style="width: 70px; height: 70px; object-fit: cover; background: #fff; border-radius: 4px;">
+            <div class="informacion-carrito ms-3 me-auto text-start">
+                <h4 class="m-0">${prod.nombre}</h4>
+                <p class="m-0">$${prod.precio.toLocaleString("es-CL")}</p>
+                <div class="cantidad d-flex align-items-center gap-2 mt-1">
+                    <button class="btn btn-sm btn-outline-light" onclick="cambiarCantidad(${i}, -1)">-</button>
                     <span>${prod.cantidad}</span>
-                    <button onclick="cambiarCantidad(${i}, 1)">+</button>
+                    <button class="btn btn-sm btn-outline-light" onclick="cambiarCantidad(${i}, 1)">+</button>
                 </div>
             </div>
-            <button class="boton-eliminar" onclick="eliminarProducto(${i})">Eliminar</button>
+            <button class="btn btn-danger btn-sm ms-2" onclick="eliminarProducto(${i})">Eliminar</button>
         `;
         listaCarrito.appendChild(item);
     });
@@ -145,19 +151,14 @@ function mostrarCarrito() {
     let total = carrito.reduce((acc, p) => acc + (p.precio * p.cantidad), 0);
     if (resumenCarrito) {
         resumenCarrito.innerHTML = `
-            <div class="total-carrito">
+            <div class="total-carrito border-top pt-3 mt-3">
                 <h3>Total: $${total.toLocaleString("es-CL")}</h3>
-                <button class="boton-vaciar" onclick="vaciarCarrito()">Vaciar carrito</button>
-                <button class="boton-finalizar" onclick="finalizarCompra()">Finalizar compra</button>
+                <button class="btn btn-secondary me-2" onclick="vaciarCarrito()">Vaciar carrito</button>
+                <button class="btn btn-success" onclick="finalizarCompra()">Finalizar compra</button>
             </div>
         `;
     }
 }
-    
-
-setInterval(actualizarProductos, 60000);
-actualizarProductos();
-
 
 function cambiarCantidad(i, cambio) {
     let c = obtenerCarrito();
@@ -182,95 +183,29 @@ function vaciarCarrito() {
 }
 
 function finalizarCompra() {
-    const modal = document.getElementById("modal-compra");
-    if (modal) {
-        modal.classList.add("mostrar");
-    }
+    alert("¡Gracias por tu compra!");
     localStorage.removeItem("carrito");
     mostrarCarrito();
 }
 
-function cerrarModalCompra() {
-    const modal = document.getElementById("modal-compra");
-    if (modal) {
-        modal.classList.remove("mostrar");
-    }
-}
-
-function mostrarCatalogo() {
-    const catalogo = document.getElementById("vista-productos");
-    if (!catalogo) return;
-
-    catalogo.innerHTML = "";
-
-    productosFijos.forEach((producto, indice) => {
-        const precioOferta = producto.precio -
-            producto.precio * producto.descuento / 100;
-
-        catalogo.innerHTML += `
-            <article class="producto">
-                <img src="${producto.imagen}" alt="${producto.nombre}"
-                     class="producto-imagen">
-                <div class="producto-info">
-                    <p class="categoria-producto">Construcción</p>
-                    <h3>${producto.nombre}</h3>
-                    <p class="precio">
-                        $${precioOferta.toLocaleString("es-CL")}
-                    </p>
-                    <button class="boton-carrito"
-                            onclick="agregarAlCarrito(${indice})">
-                        Agregar al carrito
-                    </button>
-                </div>
-            </article>
-        `;
-    });
-}
-
-function agregarAlCarrito(indice) {
-    const producto = productosFijos[indice];
-    const carritoActual = obtenerCarrito();
-
-    const existente = carritoActual.find(
-        item => item.nombre === producto.nombre
-    );
-
-    const precioOferta = producto.precio -
-        producto.precio * producto.descuento / 100;
-
-    if (existente) {
-        existente.cantidad++;
-    } else {
-        carritoActual.push({
-            nombre: producto.nombre,
-            precio: precioOferta,
-            imagen: producto.imagen,
-            cantidad: 1
-        });
-    }
-
-    guardarCarrito(carritoActual);
-    mostrarToast("Producto agregado al carrito");
-    mostrarCarrito();
-}
-
+// ==========================================
+// CONTROL DE VISTAS (PRODUCTOS / CARRITO)
+// ==========================================
 function mostrarVista(vista) {
-    document.getElementById("vista-productos").style.display =
-        vista === "productos" ? "grid" : "none";
+    const vistaProd = document.getElementById("vista-productos");
+    const vistaCarr = document.getElementById("vista-carrito");
 
-    document.getElementById("vista-carrito").style.display =
-        vista === "carrito" ? "block" : "none";
+    if (vistaProd) vistaProd.style.display = (vista === "productos") ? "flex" : "none";
+    if (vistaCarr) vistaCarr.style.display = (vista === "carrito") ? "block" : "none";
 
     if (vista === "carrito") mostrarCarrito();
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    mostrarCatalogo();
-}); 
-
-
-
+// ==========================================
+// INICIALIZACIÓN Y EVENTOS DE BOTONES
+// ==========================================
 document.addEventListener("DOMContentLoaded", function () {
+    mostrarCarrito();
 
     document.addEventListener("click", function (e) {
         if (e.target && e.target.classList.contains("boton-carrito")) {
@@ -281,11 +216,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const elPrecio = tarjeta.querySelector(".precio");
             const elImagen = tarjeta.querySelector("img");
 
-            const nombre = elNombre ? elNombre.textContent.trim() : "Producto Gamer";
+            const nombre = elNombre ? elNombre.textContent.trim() : "Producto";
             let precioNum = 0;
             if (elPrecio) {
                 precioNum = Number(elPrecio.textContent.replace(/[^0-9]/g, "")) || 0;
             }
+
+            // Usar getAttribute para no alterar la ruta relativa img/...
             const imagen = elImagen ? elImagen.getAttribute("src") : "";
 
             const producto = {
@@ -305,8 +242,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             guardarCarrito(carrito);
-            
-            // Notificación Flotante Estilizada (remplazó al alert)
             mostrarToast(`¡${nombre} agregado al carrito!`, "🛒");
         }
-    })});
+    });
+});
