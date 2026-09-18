@@ -12,7 +12,7 @@
     <main>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Navbar</a>
+                    <a class="navbar-brand fw-bold" href="index.html">FerreMarket</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                     </button>
@@ -86,13 +86,15 @@
                 </select>
                 <span id="errorCategoria" class = "error"></span>
             </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="RegistrarCheck" required>
-                <label class="form-check-label" for="RegistrarCheck">Checar</label>
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="RegistrarCheck" required>
-                <label class="form-check-label" for="RegistrarCheck">Checar</label>
+            <div class = "mb-3">
+                <label for="region">Region</label>
+                <select id="region" name="region">
+                    <option value="">Seleccione una comuna</option>
+                    <option value="region">Región metropolitana de Santiago</option>
+                    <option value="region">Región de Ñuble</option>
+                    <option value="region">Región de la Araucania</option>
+                </select>
+                <span id="errorCategoria" class = "error"></span>
             </div>
             <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" id="RegistrarCheck" required>
