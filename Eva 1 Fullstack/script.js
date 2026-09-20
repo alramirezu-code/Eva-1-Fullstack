@@ -12,7 +12,7 @@ const productosFijos = [
     {
         codigo: "PRO001",
         nombre: "Set de herramientas manuales",
-        descripcion: "Set de herramientas manuales",
+        descripcion: "Set de herramientas manuales para el hogar y trabajos de mantención. Reúne las herramientas básicas para armar, ajustar, apretar y reparar, en un solo kit fácil de guardar y transportar.",
         precio: 16500,
         stock: 20,
         stockCritico: 5,
@@ -22,7 +22,7 @@ const productosFijos = [
     {
         codigo: "PRO002",
         nombre: "Concertina Alambre Púas",
-        descripcion: "Rollo de concertina de alambre de púas",
+        descripcion: "Rollo de concertina de alambre de púas para reforzar cierres perimetrales de terrenos, bodegas y recintos. Se instala sobre muros o rejas como barrera adicional. Manipular con guantes de protección.",
         precio: 15000,
         stock: 15,
         stockCritico: 5,
@@ -32,7 +32,7 @@ const productosFijos = [
     {
         codigo: "PRO003",
         nombre: "Rollo aislante aluminio 1,20 m x 10 m",
-        descripcion: "Rollo aislante térmico de aluminio",
+        descripcion: "Rollo aislante térmico de aluminio de 1,20 m x 10 m. Se instala bajo techumbres y en muros para reducir la pérdida de calor en invierno y el ingreso de calor en verano.",
         precio: 6990,
         stock: 20,
         stockCritico: 5,
@@ -42,7 +42,7 @@ const productosFijos = [
     {
         codigo: "PRO004",
         nombre: "Panel PVC con revestimiento de metal",
-        descripcion: "Panel PVC para revestimiento",
+        descripcion: "Panel de PVC con revestimiento de metal para muros y cielos. Es resistente a la humedad, tiene un acabado decorativo y es fácil de limpiar.",
         precio: 5750,
         stock: 25,
         stockCritico: 5,
@@ -52,7 +52,7 @@ const productosFijos = [
     {
         codigo: "PRO005",
         nombre: "Panel metal con revestimiento de madera",
-        descripcion: "Panel metálico con terminación tipo madera",
+        descripcion: "Panel metálico con terminación tipo madera para revestir muros y cielos. Da la apariencia de la madera con la resistencia del metal y sin necesidad de barnizado.",
         precio: 8500,
         stock: 15,
         stockCritico: 5,
@@ -62,7 +62,7 @@ const productosFijos = [
     {
         codigo: "PRO006",
         nombre: "Plancha de yeso cartón",
-        descripcion: "Plancha de yeso cartón para construcción",
+        descripcion: "Plancha de yeso cartón para construir tabiques, cielos falsos y revestimientos interiores. Deja una superficie lisa lista para masillar y pintar.",
         precio: 9990,
         stock: 30,
         stockCritico: 10,
@@ -72,7 +72,7 @@ const productosFijos = [
     {
         codigo: "PRO007",
         nombre: "Pegamento para madera",
-        descripcion: "Adhesivo para trabajos en madera",
+        descripcion: "Adhesivo para trabajos en madera, útil en carpintería, reparación de muebles y manualidades. Genera uniones firmes y es fácil de aplicar.",
         precio: 7000,
         stock: 20,
         stockCritico: 5,
@@ -82,7 +82,7 @@ const productosFijos = [
     {
         codigo: "PRO008",
         nombre: "Taladro atornillador",
-        descripcion: "Taladro atornillador para trabajos de construcción",
+        descripcion: "Taladro atornillador para trabajos de construcción y mantención. Permite perforar y atornillar con un solo equipo. Usar con elementos de protección personal.",
         precio: 15500,
         stock: 10,
         stockCritico: 3,
@@ -92,7 +92,7 @@ const productosFijos = [
     {
         codigo: "PRO009",
         nombre: "Mortero impermeabilizante 500 g",
-        descripcion: "Mortero impermeabilizante para construcción",
+        descripcion: "Mortero impermeabilizante de 500 g para sellar superficies frente a la humedad y filtraciones. Se usa en muros, terrazas y zonas expuestas al agua.",
         precio: 12750,
         stock: 15,
         stockCritico: 5,
@@ -108,27 +108,6 @@ const comunasPorRegion = {
   "NUBLE": ["Chillán", "Linares", "Longaví", "Concepción"]
 };
 
-
-// ==========================================
-// LISTA AGREGAR PRODUCTOS
-// ==========================================
-function agregarProducto(nombre, precio, imagen, descuento, fechaOferta) {
-
-    const nuevoProducto = {
-        nombre: nombre,
-        precio: precio,
-        imagen: imagen,
-        descuento: descuento,
-        fechaOferta: fechaOferta
-    };
-
-    productos.push(nuevoProducto);
-
-    localStorage.setItem(
-        "productos",
-        JSON.stringify(productos)
-    );
-}
 
 // ==========================================
 // MOSTRAR PRODUCTOS EN EL CATÁLOGO
@@ -151,13 +130,9 @@ function mostrarProductos() {
         tarjeta.classList.add("producto");
 
         tarjeta.innerHTML = `
-            <a href="detalle producto.html?codigo=${producto.codigo}">
-
-                <img src="${producto.imagen}"
-                    alt="${producto.nombre}"
-                    class="producto-imagen">
-
-            </a>
+            <img src="${producto.imagen}"
+            alt="${producto.nombre}"
+            class="producto-imagen">
 
             <div class="producto-info">
 
@@ -171,10 +146,10 @@ function mostrarProductos() {
                     $${producto.precio.toLocaleString("es-CL")}
                 </p>
 
-                <button class="btn btn-light mb-2 boton-detalle"
-                        data-codigo="${producto.codigo}">
+                <a href="detalle producto.html?codigo=${producto.codigo}"
+                class="btn btn-light mb-2">
                     Ver detalle
-                </button>
+                </a>
 
                 <button class="boton-carrito">
                     Agregar al carrito
@@ -192,77 +167,59 @@ function mostrarProductos() {
 // ==========================================
 
 function mostrarDetalleProducto() {
-
-    const contenedor =
-        document.getElementById("detalle-producto");
-
+    const contenedor = document.getElementById("detalleProducto");
     if (!contenedor) return;
-
-
-    const codigo =
-        localStorage.getItem("productoSeleccionado");
-
-
-    const todosLosProductos =
-        productosFijos.concat(productos);
-
-
-    const producto =
-        todosLosProductos.find(
-            producto => producto.codigo === codigo
-        );
-
-
-    if (!producto) {
-
+    const parametros = new URLSearchParams(window.location.search);
+    const codigo = parametros.get("codigo");
+    if (!codigo) {
         contenedor.innerHTML = `
-            <p>Producto no encontrado.</p>
+            <div class="alert alert-warning text-center">
+                <p class="m-0">No se especificó ningún producto.</p>
+                <a href="productos.html" class="btn btn-primary mt-2">Ir al catálogo</a>
+            </div>
         `;
-
         return;
     }
-
-
-    contenedor.innerHTML = `
-        <article class="producto detalle-producto">
-
-            <img src="${producto.imagen}"
-                 alt="${producto.nombre}"
-                 class="producto-imagen">
-
-            <div class="producto-info">
-
-                <p class="categoria-producto">
-                    ${producto.categoria}
-                </p>
-
-                <h3>${producto.nombre}</h3>
-
-                <p>
-                    ${producto.descripcion}
-                </p>
-
-                <p class="precio">
-                    $${producto.precio.toLocaleString("es-CL")}
-                </p>
-
-                <p>
-                    Stock disponible: ${producto.stock}
-                </p>
-
-                <button class="boton-carrito">
-                    Agregar al carrito
-                </button>
-
-                <a href="productos.html"
-                   class="btn btn-light mt-2">
-
-                    Volver a productos
-
-                </a>
-
+    const todosLosProductos = productosFijos.concat(productos);
+    // Búsqueda más segura (limpia espacios y no distingue mayúsculas/minúsculas)
+    const producto = todosLosProductos.find(
+        p => p.codigo && p.codigo.trim().toUpperCase() === codigo.trim().toUpperCase()
+    );
+    if (!producto) {
+        contenedor.innerHTML = `
+            <div class="alert alert-danger text-center">
+                <p class="m-0">Producto con código "<strong>${codigo}</strong>" no encontrado.</p>
+                <a href="productos.html" class="btn btn-secondary mt-2">Volver a productos</a>
             </div>
-
+        `;
+        return;
+    }
+    contenedor.innerHTML = `
+        <article class="producto detalle-producto card p-4 shadow-sm">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-5 text-center">
+                    <img src="${producto.imagen}"
+                         alt="${producto.nombre}"
+                         class="img-fluid rounded producto-imagen"
+                         style="max-height: 350px; object-fit: contain;">
+                </div>
+                <div class="col-md-7 producto-info">
+                    <span class="badge bg-secondary mb-2">${producto.categoria}</span>
+                    <h3 class="fw-bold">${producto.nombre}</h3>
+                    <p class="text-muted">${producto.descripcion}</p>
+                    <p class="precio text-success fw-bold fs-3">$${producto.precio.toLocaleString("es-CL")}</p>
+                    <p class="mb-3"><strong>Stock disponible:</strong> ${producto.stock} unidades</p>
+                    
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success boton-carrito">
+                            Agregar al carrito
+                        </button>
+                        <a href="productos.html" class="btn btn-outline-secondary">
+                            Volver a productos
+                        </a>
+                    </div>
+                </div>
+            </div>
         </article>
     `;
 }
@@ -456,26 +413,11 @@ document.addEventListener("DOMContentLoaded", function () {
     mostrarDetalleProducto();
     mostrarCarrito();
 
+        // Abre el carrito si la URL trae ?vista=carrito
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("vista") === "carrito") mostrarVista("carrito");
 
     document.addEventListener("click", function (e) {
-
-        // ==========================================
-        // BOTÓN VER DETALLE
-        // ==========================================
-
-        if (e.target && e.target.classList.contains("boton-detalle")) {
-
-            const codigo = e.target.dataset.codigo;
-
-            localStorage.setItem(
-                "productoSeleccionado",
-                codigo
-            );
-
-            window.location.href = "detalle producto.html";
-
-            return;
-        }
 
 
         // ==========================================
@@ -1256,32 +1198,6 @@ if (formContacto) {
   }
 
     // ==========================================
-    // VERIFICAR ACCESO SEGÚN ROL
-    // ==========================================
-
-    function verificarAcceso(rolesPermitidos) {
-
-        const usuarioActivo =
-            JSON.parse(localStorage.getItem("usuarioActivo"));
-
-        // Si no existe usuario iniciado
-        if (!usuarioActivo) {
-            window.location.href = "inicio sesion.html";
-            return;
-        }
-
-        // Si el rol no tiene permiso
-        if (!rolesPermitidos.includes(usuarioActivo.rol)) {
-
-            alert("No tienes permisos para acceder a esta página.");
-
-            window.location.href = "index.html";
-            return;
-        }
-    }
-
-
-    // ==========================================
     // CONTROL DE ACCESO Y RESTRICCIÓN DE VISTAS
     // ==========================================
     // Valida si el usuario tiene permiso para estar en la página actual
@@ -1323,3 +1239,4 @@ if (formContacto) {
     }
 });
 
+ 
