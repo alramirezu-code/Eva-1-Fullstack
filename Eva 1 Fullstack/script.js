@@ -152,12 +152,8 @@ function mostrarProductos() {
 
         tarjeta.innerHTML = `
             <a href="detalle-producto.html?codigo=${producto.codigo}"
-            class="text-decoration-none">
-
-                <img src="${producto.imagen}"
-                    alt="${producto.nombre}"
-                    class="producto-imagen">
-
+                class="btn btn-light mb-2">
+                Ver detalle
             </a>
 
             <div class="producto-info">
@@ -188,89 +184,6 @@ function mostrarProductos() {
 
         contenedor.appendChild(tarjeta);
     });
-}
-
-// ==========================================
-// MOSTRAR DETALLE DEL PRODUCTO
-// ==========================================
-
-function mostrarDetalleProducto() {
-
-    const contenedor =
-        document.getElementById("detalle-producto");
-
-    if (!contenedor) return;
-
-
-    const parametros =
-        new URLSearchParams(window.location.search);
-
-    const codigo =
-        parametros.get("codigo");
-
-
-    const todosLosProductos =
-        productosFijos.concat(productos);
-
-
-    const producto =
-        todosLosProductos.find(
-            producto => producto.codigo === codigo
-        );
-
-
-    if (!producto) {
-
-        contenedor.innerHTML = `
-            <p>Producto no encontrado.</p>
-        `;
-
-        return;
-    }
-
-
-    contenedor.innerHTML = `
-        <article class="producto detalle-producto">
-
-            <img src="${producto.imagen}"
-                 alt="${producto.nombre}"
-                 class="producto-imagen">
-
-            <div class="producto-info">
-
-                <p class="categoria-producto">
-                    ${producto.categoria}
-                </p>
-
-                <h3>${producto.nombre}</h3>
-
-                <p>
-                    ${producto.descripcion}
-                </p>
-
-                <p class="precio">
-                    $${producto.precio.toLocaleString("es-CL")}
-                </p>
-
-                <p>
-                    Stock disponible: ${producto.stock}
-                </p>
-
-                <button class="boton-carrito">
-                    Agregar al carrito
-                </button>
-
-                <a href="productos.html"
-                   class="btn btn-light mt-2">
-
-                    Volver a productos
-
-                </a>
-
-            </div>
-
-        </article>
-    `;
 }
 
 // ==========================================
