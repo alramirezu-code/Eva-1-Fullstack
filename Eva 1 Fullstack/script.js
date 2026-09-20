@@ -151,9 +151,12 @@ function mostrarProductos() {
         tarjeta.classList.add("producto");
 
         tarjeta.innerHTML = `
-            <a href="detalle-producto.html?codigo=${producto.codigo}"
-                class="btn btn-light mb-2">
-                Ver detalle
+            <a href="detalle producto.html?codigo=${producto.codigo}">
+
+                <img src="${producto.imagen}"
+                    alt="${producto.nombre}"
+                    class="producto-imagen">
+
             </a>
 
             <div class="producto-info">
@@ -168,12 +171,10 @@ function mostrarProductos() {
                     $${producto.precio.toLocaleString("es-CL")}
                 </p>
 
-                <a href="detalle-producto.html?codigo=${producto.codigo}"
-                class="btn btn-light mb-2">
-
+                <button class="btn btn-light mb-2 boton-detalle"
+                        data-codigo="${producto.codigo}">
                     Ver detalle
-
-                </a>
+                </button>
 
                 <button class="boton-carrito">
                     Agregar al carrito
@@ -198,11 +199,8 @@ function mostrarDetalleProducto() {
     if (!contenedor) return;
 
 
-    const parametros =
-        new URLSearchParams(window.location.search);
-
     const codigo =
-        parametros.get("codigo");
+        localStorage.getItem("productoSeleccionado");
 
 
     const todosLosProductos =
@@ -458,22 +456,66 @@ document.addEventListener("DOMContentLoaded", function () {
     mostrarDetalleProducto();
     mostrarCarrito();
 
+
     document.addEventListener("click", function (e) {
+
+        // ==========================================
+        // BOTÓN VER DETALLE
+        // ==========================================
+
+        if (e.target && e.target.classList.contains("boton-detalle")) {
+
+            const codigo = e.target.dataset.codigo;
+
+            localStorage.setItem(
+                "productoSeleccionado",
+                codigo
+            );
+
+            window.location.href = "detalle producto.html";
+
+            return;
+        }
+
+
+        // ==========================================
+        // BOTÓN AGREGAR AL CARRITO
+        // ==========================================
+
         if (e.target && e.target.classList.contains("boton-carrito")) {
+
             const tarjeta = e.target.closest(".producto");
+
             if (!tarjeta) return;
+
 
             const elNombre = tarjeta.querySelector("h3");
             const elPrecio = tarjeta.querySelector(".precio");
             const elImagen = tarjeta.querySelector("img");
 
-            const nombre = elNombre ? elNombre.textContent.trim() : "Producto";
+
+            const nombre =
+                elNombre
+                    ? elNombre.textContent.trim()
+                    : "Producto";
+
+
             let precioNum = 0;
+
             if (elPrecio) {
-                precioNum = Number(elPrecio.textContent.replace(/[^0-9]/g, "")) || 0;
+
+                precioNum =
+                    Number(
+                        elPrecio.textContent.replace(/[^0-9]/g, "")
+                    ) || 0;
             }
 
-            const imagen = elImagen ? elImagen.getAttribute("src") : "";
+
+            const imagen =
+                elImagen
+                    ? elImagen.getAttribute("src")
+                    : "";
+
 
             const producto = {
                 nombre: nombre,
@@ -482,19 +524,37 @@ document.addEventListener("DOMContentLoaded", function () {
                 cantidad: 1
             };
 
+
             let carrito = obtenerCarrito();
-            const existe = carrito.find(item => item.nombre === nombre);
+
+
+            const existe =
+                carrito.find(
+                    item => item.nombre === nombre
+                );
+
 
             if (existe) {
+
                 existe.cantidad++;
+
             } else {
+
                 carrito.push(producto);
+
             }
 
+
             guardarCarrito(carrito);
-            mostrarToast(`¡${nombre} agregado al carrito!`, "🛒");
+
+            mostrarToast(
+                `¡${nombre} agregado al carrito!`,
+                "🛒"
+            );
         }
+
     });
+
 });
 
 // Función para validar RUN chileno (módulo 11) sin puntos ni guión
@@ -1032,25 +1092,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
 
-            const nuevoUsuario = {
+            const rolSelect = document.getElementById('rol') || document.getElementById('tipoUsuario');
+            const rolFinal = rolSelect ? rolSelect.value : 'Cliente';
 
+            const nuevoUsuario = {
                 run: run.value.trim().toUpperCase(),
                 nombre: nombre.value.trim(),
                 apellidos: apellidos.value.trim(),
                 correo: correoIngresado,
-                telefono: telefono.value.trim(),
-                region: region.value,
-                comuna: comuna.value,
-
-                direccion:
-                    document.getElementById('direccion').value.trim(),
-
-                fechaNacimiento:
-                    document.getElementById('fechaNacimiento').value,
-
+                telefono: telefono ? telefono.value.trim() : '',
+                region: region ? region.value : '',
+                comuna: comuna ? comuna.value : '',
+                direccion: document.getElementById('direccion') ? document.getElementById('direccion').value.trim() : '',
+                fechaNacimiento: document.getElementById('fechaNacimiento') ? document.getElementById('fechaNacimiento').value : '',
                 clave: clave.value,
-
-                rol: 'Cliente'
+                rol: rolFinal // <--- Aquí se asigna el rol dinámico o por defecto Cliente
             };
 
 
@@ -1224,4 +1280,46 @@ if (formContacto) {
         }
     }
 
+
+    // ==========================================
+    // CONTROL DE ACCESO Y RESTRICCIÓN DE VISTAS
+    // ==========================================
+    // Valida si el usuario tiene permiso para estar en la página actual
+    function verificarAcceso(rolesPermitidos) {
+        const usuarioActivo = obtenerUsuarioActivo();
+        // Si no ha iniciado sesión, redirigir al login
+        if (!usuarioActivo) {
+            window.location.href = "inicio sesion.html";
+            return null;
+        }
+        // Si su rol no está permitido en esta vista
+        if (!rolesPermitidos.includes(usuarioActivo.rol)) {
+            alert("No tienes permisos para acceder a esta página.");
+            window.location.href = "index.html";
+            return null;
+        }
+        return usuarioActivo;
+    }
+    // Oculta elementos según el rol (cumpliendo las restricciones del Vendedor)
+    function aplicarRestriccionesPorRol() {
+        const usuario = obtenerUsuarioActivo();
+        if (!usuario) return;
+        // Mostrar el nombre y rol del usuario en la barra/interfaz si existe el elemento
+        const infoUsuario = document.getElementById("infoUsuarioActivo");
+        if (infoUsuario) {
+            infoUsuario.textContent = `${usuario.nombre} (${usuario.rol})`;
+        }
+        // Si es VENDEDOR: no debe ver la gestión de usuarios ni botones de administración
+        if (usuario.rol === "Vendedor") {
+            // Oculta enlaces o secciones marcadas para solo Administrador
+            const elementosSoloAdmin = document.querySelectorAll(".solo-admin, #menu-usuarios, #seccion-usuarios");
+            elementosSoloAdmin.forEach(el => el.style.display = "none");
+        }
+    }
+    // Función para cerrar sesión
+    function cerrarSesion() {
+        localStorage.removeItem("usuarioActivo");
+        window.location.href = "inicio sesion.html";
+    }
 });
+
