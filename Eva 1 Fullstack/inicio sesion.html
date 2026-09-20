@@ -8,101 +8,219 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <main>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
-                    <a class="navbar-brand fw-bold" href="index.html">FerreMarket</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-                        </li>
-                        <li class="nav-item">
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html">FerreMarket</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="productos.html">Productos</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="inicio sesion.html">Iniciar Sesion</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#">placeholder</a>
-                        </li>
-                        <form class="d-flex" role="search">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                            <button class="btn btn-outline-success" type="submit">Buscar</button>
-                        </form>
-                    </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="inicio sesion.html">Iniciar Sesión</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Buscar</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5" style="max-width: 550px;">
+        <ul class="nav nav-tabs nav-justified" id="authTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-pane" type="button" role="tab" aria-controls="login-pane" aria-selected="true">Iniciar Sesión</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold" id="register-tab" data-bs-toggle="tab" data-bs-target="#register-pane" type="button" role="tab" aria-controls="register-pane" aria-selected="false">Registrarse</button>
+            </li>
+        </ul>
+
+        <!-- FORMULARIO 1: Inicio sesion de Usuario -->
+
+        <div class="tab-content border border-top-0 p-4 bg-white rounded-bottom shadow-sm" id="authTabContent">
+            
+            <div class="tab-pane fade show active" id="login-pane" role="tabpanel" aria-labelledby="login-tab">
+                <form id="form-inicioSesion" novalidate>
+                    <div class="mb-3">
+                        <label for="loginCorreo" class="form-label text-dark">
+                            Correo electrónico *
+                        </label>
+
+                        <input
+                            type="email"
+                            class="form-control"
+                            id="loginCorreo"
+                            maxlength="100"
+                            required>
+
+                        <div class="invalid-feedback">
+                            Ingresa un correo @duoc.cl, @profesor.duoc.cl o @gmail.com
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="loginClave" class="form-label text-dark">
+                            Contraseña *
+                        </label>
+
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="loginClave"
+                            minlength="4"
+                            maxlength="10"
+                            required>
+
+                        <div class="invalid-feedback">
+                            La contraseña debe tener entre 4 y 10 caracteres.
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+   
+            <!-- FORMULARIO 2: Registro de Usuario -->
+        <div class="tab-pane fade" id="register-pane" role="tabpanel" aria-labelledby="register-tab">
+            <form id="form-Registrarse" novalidate>
+                <!-- RUN -->
+                <div class="mb-3">
+                    <label for="run" class="form-label text-dark">RUN *</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="run"
+                        placeholder="19011022K"
+                        minlength="7"
+                        maxlength="9"
+                        required
+                    >
+
+                    <div class="invalid-feedback">
+                        RUN inválido. Ingrésalo sin puntos ni guion.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="RegistrarNombre" class="form-label text-dark">Nombre *</label>
+                    <input type="text" class="form-control" id="RegistrarNombre" maxlength="50" required>
+                    <div class="invalid-feedback">Requerido (máximo 50 caracteres).</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="RegistrarApellidos" class="form-label text-dark">Apellidos *</label>
+                    <input type="text" class="form-control" id="RegistrarApellidos" maxlength="100" required>
+                    <div class="invalid-feedback">Requerido (máximo 100 caracteres).</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="RegistrarCorreo" class="form-label text-dark">Correo electrónico *</label>
+                    <input type="email" class="form-control" id="RegistrarCorreo" maxlength="100" required>
+                    <div class="invalid-feedback">Debe ser un correo @duoc.cl, @profesor.duoc.cl o @gmail.com</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="fechaNacimiento" class="form-label text-dark">Fecha de Nacimiento</label>
+                    <input type="date" class="form-control" id="fechaNacimiento">
+                    <div class="form-text">Opcional.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="telefono" class="form-label text-dark">Teléfono</label>
+                    <input type="tel" class="form-control" id="telefono" placeholder="+56912345678">
+                    <div class="invalid-feedback">Si ingresas un teléfono, debe tener al menos 9 dígitos.</div>
+                    <div class="form-text">Opcional.</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="region" class="form-label text-dark">Región *</label>
+                        <select class="form-select" id="region" required>
+                            <option value="">-- Seleccione la región --</option>
+                            <option value="RM">Región Metropolitana de Santiago</option>
+                            <option value="ARAUCANIA">Región de la Araucanía</option>
+                            <option value="NUBLE">Región de Ñuble</option>
+                        </select>
+                        <div class="invalid-feedback">Selecciona una región.</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label for="comuna" class="form-label text-dark">Comuna *</label>
+                        <select class="form-select" id="comuna" required disabled>
+                            <option value="">-- Seleccione la comuna --</option>
+                        </select>
+                        <div class="invalid-feedback">Selecciona una comuna.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="direccion" class="form-label text-dark">
+                        Dirección *
+                    </label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="direccion"
+                        maxlength="300"
+                        required>
+
+                    <div class="invalid-feedback">
+                        La dirección es obligatoria y debe tener máximo 300 caracteres.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="RegistrarClave" class="form-label text-dark">Contraseña *</label>
+                    <input type="password" class="form-control" id="RegistrarClave" required>
+                    <div class="invalid-feedback">Ingresa una contraseña.</div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="confirmarClave" class="form-label text-dark">Confirmar Contraseña *</label>
+                    <input type="password" class="form-control" id="confirmarClave" required>
+                    <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 py-2">REGISTRAR</button>
+            </form>
+        
+
+            <div class="modal fade" id="modalRecuperar" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-dark">Recuperar Contraseña</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="form-recuperar">
+                                <div class="mb-3">
+                                    <label for="correoRecuperar" class="form-label text-dark">Ingresa tu correo registrado</label>
+                                    <input type="email" class="form-control" id="correoRecuperar" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Enviar instrucciones</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-
-        <form id="form-inicioSesion">
-            
-            <div class="mb-3">
-                <label for="exampleInputNombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre">
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputEmail" class="form-label">Correo electronico</label>
-                <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">Su correo es privado y no se mostrara a nadie externo.</div>
-            </div>
-            <div class="mb-3">
-                <label for="exampleInputClave" class="form-label">Clave</label>
-                <input type="password" class="form-control" id="exampleInputClave">
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Checar</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Ingresar</button>
-        </form>
-
-        <form id="form-Registrarse">
-            <h3 class="mb-3">Crear cuenta</h3>
-            <div class="mb-3">
-                <label for="RegistrarNombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="RegistrarNombre" required>
-            </div>
-            <div class="mb-3">
-                <label for="RegistrarCorreo" class="form-label">Correo electronico</label>
-                <input type="email" class="form-control" id="RegistrarCorreo" aria-describedby="emailHelpRegister" required>
-                <div id="emailHelpRegister" class="form-text">Su correo es privado y no se mostrara a nadie externo.</div>
-            </div>
-            <div class="mb-3">
-                <label for="RegistrarClave" class="form-label">Clave</label>
-                <input type="password" class="form-control" id="RegistrarClave" required>
-            </div>
-            <div class = "mb-3">
-                <label for="comuna">Comuna</label>
-                <select id="comuna" name="comuna">
-                    <option value="">Seleccione una comuna</option>
-                    <option value="comuna">La Florida</option>
-                    <option value="comuna">Providencia</option>
-                    <option value="comuna">Santiago Centro</option>
-                </select>
-                <span id="errorCategoria" class = "error"></span>
-            </div>
-            <div class = "mb-3">
-                <label for="region">Region</label>
-                <select id="region" name="region">
-                    <option value="">Seleccione una comuna</option>
-                    <option value="region">Región metropolitana de Santiago</option>
-                    <option value="region">Región de Ñuble</option>
-                    <option value="region">Región de la Araucania</option>
-                </select>
-                <span id="errorCategoria" class = "error"></span>
-            </div>
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="RegistrarCheck" required>
-                <label class="form-check-label" for="RegistrarCheck">Checar</label>
-            </div>
-            <button type="submit" class="btn btn-primary">Registrarse</button>
-        </form>
+        </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

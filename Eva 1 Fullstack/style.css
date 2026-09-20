@@ -1,32 +1,66 @@
+/* ==========================================
+   ESTILOS GENERALES
+   ========================================== */
 body {
     font-family: Arial, sans-serif;
-    text-align: center;
     background-color: #8913ce;
-    color: #ffffff; /* Texto general blanco para mejor contraste */
+    color: #ffffff;
     margin: 0;
     padding: 0;
+}
+
+/* Alineación de encabezados globales sobre fondo morado */
+h1, h2, h3 {
+    color: #ffffff;
 }
 
 section {
     padding: 40px 5%;
 }
 
-section h2 {
-    text-align: center;
-    font-size: 32px;
-    margin-bottom: 25px;
-    color: #ffffff;
-}
-
 button:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
     cursor: pointer;
+    transition: transform 0.2s ease;
 }
 
 .descripcion {
     text-align: center;
     color: #e0e0e0;
     margin-bottom: 40px;
+}
+
+/* ==========================================
+   AJUSTES PARA BOOTSTRAP Y FORMULARIOS
+   ========================================== */
+/* Tarjetas de propuesta de valor y Hero Section */
+.card, .jumbotron, .bg-light {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+}
+
+/* Forzar contraste de texto en tarjetas y cajas claras */
+.card-title, .card-text, .form-label, .form-text {
+    color: #212529 !important;
+}
+
+/* Contenedores de Inicio de Sesión y Registro */
+#authTabContent, .modal-content {
+    background-color: #ffffff !important;
+    color: #212529 !important;
+    border-radius: 8px;
+}
+
+.nav-tabs .nav-link {
+    color: #ffffff;
+    background-color: #6b46ef;
+    border-color: #2a1fa4;
+}
+
+.nav-tabs .nav-link.active {
+    color: #212529 !important;
+    background-color: #ffffff !important;
+    font-weight: bold;
 }
 
 /* ==========================================
@@ -64,6 +98,7 @@ button:hover {
     background-color: #ffffff;
     display: block;
 }
+
 .producto-info {
     padding: 20px;
     display: flex;
@@ -98,7 +133,6 @@ button:hover {
     color: #ffffff;
 }
 
-/* Botón de agregar al carrito dentro de la tarjeta */
 .boton-carrito {
     background-color: #2a1fa4;
     color: #ffffff;
@@ -275,4 +309,24 @@ button:hover {
 
 #toast-icono {
     font-size: 1.4rem;
+}
+
+/* ==========================================
+   BLOGS
+   ========================================== */
+
+.contenedor-blogs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.blog-card {
+    width: 350px;
+}
+
+.blog-card img {
+    height: 220px;
+    object-fit: cover;
 }

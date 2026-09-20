@@ -25,6 +25,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="inicio sesion.html">Iniciar Sesión</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blogs.html">Blogs</a>
+                    </li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search"/>
@@ -35,40 +38,58 @@
     </nav>
 
     <main class="container my-4">
-    <section id="inicio" class="p-5 mb-4 bg-light rounded-3 text-center text-dark">
-        <h1 class="display-5 fw-bold text-dark">Bienvenido a FerreMarket</h1>
-        <p class="fs-4 text-dark">Encuentra los mejores materiales y herramientas para tus proyectos agrícolas y del hogar.</p>
-        <a href="productos.html" class="btn btn-primary btn-lg">Ver catálogo</a>
-    </section>
-    <section id="ofertas" class="mb-5">
-        <h2 class="mb-4 text-center text-white">Ofertas Destacadas</h2>
-        <div id="contenedor-ofertas" class="row">
-        </div>
-    </section>
-    <article class="my-5">
-        <h2 class="text-center mb-4 text-white">¿Por qué FerreMarket es tu sitio de compra ideal?</h2>
-        <div class="row text-center g-4">
-            <div class="col-md-4">
-                <div class="card h-100 p-3 shadow-sm text-dark">
-                    <h5 class="card-title fw-bold text-dark">Calidad</h5>
-                    <p class="card-text text-dark">Trabajamos directamente con marcas de renombre para garantizar la durabilidad de tus herramientas.</p>
+        <section id="inicio" class="p-5 mb-4 bg-light rounded-3 text-center text-dark">
+            <h1 class="display-5 fw-bold text-dark">Bienvenido a FerreMarket</h1>
+            <p class="fs-4 text-dark">Encuentra los mejores materiales y herramientas para tus proyectos agrícolas y del hogar.</p>
+            <a href="productos.html" class="btn btn-primary btn-lg">Ver catálogo</a>
+        </section>
+
+            <!-- PRODUCTOS DESTACADOS -->
+        <section class="productos-inicio">
+
+            <h2 class="text-center mb-4">
+                Productos destacados
+            </h2>
+
+            <div id="productos-destacados"
+                class="contenedor-productos">
+            </div>
+
+            <div class="text-center mt-4">
+
+                <a href="productos.html"
+                class="btn btn-light">
+                    Ver todos los productos
+                </a>
+
+            </div>
+        </section>
+
+        <article class="my-5">
+            <h2 class="text-center mb-4 text-white">¿Por qué FerreMarket es tu sitio de compra ideal?</h2>
+            <div class="row text-center g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 p-3 shadow-sm text-dark">
+                        <h5 class="card-title fw-bold text-dark">Calidad</h5>
+                        <p class="card-text text-dark">Trabajamos directamente con marcas de renombre para garantizar la durabilidad de tus herramientas.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 p-3 shadow-sm text-dark">
+                        <h5 class="card-title fw-bold text-dark">Reembolso Garantizado</h5>
+                        <p class="card-text text-dark">Procesamos reembolsos rápidos si tu producto presenta defectos de fábrica o no llega en buen estado.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 p-3 shadow-sm text-dark">
+                        <h5 class="card-title fw-bold text-dark">Seguridad</h5>
+                        <p class="card-text text-dark">Nuestra pasarela de pagos se rige bajo los estrictos estándares de seguridad PCI DSS.</p>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100 p-3 shadow-sm text-dark">
-                    <h5 class="card-title fw-bold text-dark">Reembolso Garantizado</h5>
-                    <p class="card-text text-dark">Procesamos reembolsos rápidos si tu producto presenta defectos de fábrica o no llega en buen estado.</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card h-100 p-3 shadow-sm text-dark">
-                    <h5 class="card-title fw-bold text-dark">Seguridad</h5>
-                    <p class="card-text text-dark">Nuestra pasarela de pagos se rige bajo los estrictos estándares de seguridad PCI DSS.</p>
-                </div>
-            </div>
-        </div>
-    </article>
-</main>
+        </article>
+    </main>
+
 
     <footer id="datosPlaceholder" class="bg-dark text-white p-4 mt-5">
         <div class="container text-center text-md-start">
