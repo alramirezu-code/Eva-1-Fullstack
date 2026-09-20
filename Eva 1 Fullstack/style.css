@@ -148,6 +148,21 @@ button:hover {
 }
 
 /* ==========================================
+   DETALLE DE PRODUCTO
+   ========================================== */
+
+.detalle-producto {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.detalle-producto img {
+    height: 350px;
+    object-fit: contain;
+}
+
+/* ==========================================
    VISTA CARRITO DE COMPRAS
    ========================================== */
 .carrito {

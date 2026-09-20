@@ -151,9 +151,14 @@ function mostrarProductos() {
         tarjeta.classList.add("producto");
 
         tarjeta.innerHTML = `
-            <img src="${producto.imagen}"
-                 alt="${producto.nombre}"
-                 class="producto-imagen">
+            <a href="detalle-producto.html?codigo=${producto.codigo}"
+            class="text-decoration-none">
+
+                <img src="${producto.imagen}"
+                    alt="${producto.nombre}"
+                    class="producto-imagen">
+
+            </a>
 
             <div class="producto-info">
 
@@ -167,6 +172,13 @@ function mostrarProductos() {
                     $${producto.precio.toLocaleString("es-CL")}
                 </p>
 
+                <a href="detalle-producto.html?codigo=${producto.codigo}"
+                class="btn btn-light mb-2">
+
+                    Ver detalle
+
+                </a>
+
                 <button class="boton-carrito">
                     Agregar al carrito
                 </button>
@@ -176,6 +188,172 @@ function mostrarProductos() {
 
         contenedor.appendChild(tarjeta);
     });
+}
+
+// ==========================================
+// MOSTRAR DETALLE DEL PRODUCTO
+// ==========================================
+
+function mostrarDetalleProducto() {
+
+    const contenedor =
+        document.getElementById("detalle-producto");
+
+    if (!contenedor) return;
+
+
+    const parametros =
+        new URLSearchParams(window.location.search);
+
+    const codigo =
+        parametros.get("codigo");
+
+
+    const todosLosProductos =
+        productosFijos.concat(productos);
+
+
+    const producto =
+        todosLosProductos.find(
+            producto => producto.codigo === codigo
+        );
+
+
+    if (!producto) {
+
+        contenedor.innerHTML = `
+            <p>Producto no encontrado.</p>
+        `;
+
+        return;
+    }
+
+
+    contenedor.innerHTML = `
+        <article class="producto detalle-producto">
+
+            <img src="${producto.imagen}"
+                 alt="${producto.nombre}"
+                 class="producto-imagen">
+
+            <div class="producto-info">
+
+                <p class="categoria-producto">
+                    ${producto.categoria}
+                </p>
+
+                <h3>${producto.nombre}</h3>
+
+                <p>
+                    ${producto.descripcion}
+                </p>
+
+                <p class="precio">
+                    $${producto.precio.toLocaleString("es-CL")}
+                </p>
+
+                <p>
+                    Stock disponible: ${producto.stock}
+                </p>
+
+                <button class="boton-carrito">
+                    Agregar al carrito
+                </button>
+
+                <a href="productos.html"
+                   class="btn btn-light mt-2">
+
+                    Volver a productos
+
+                </a>
+
+            </div>
+
+        </article>
+    `;
+}
+
+// ==========================================
+// MOSTRAR DETALLE DEL PRODUCTO
+// ==========================================
+
+function mostrarDetalleProducto() {
+
+    const contenedor =
+        document.getElementById("detalle-producto");
+
+    if (!contenedor) return;
+
+
+    const parametros =
+        new URLSearchParams(window.location.search);
+
+    const codigo =
+        parametros.get("codigo");
+
+
+    const todosLosProductos =
+        productosFijos.concat(productos);
+
+
+    const producto =
+        todosLosProductos.find(
+            producto => producto.codigo === codigo
+        );
+
+
+    if (!producto) {
+
+        contenedor.innerHTML = `
+            <p>Producto no encontrado.</p>
+        `;
+
+        return;
+    }
+
+
+    contenedor.innerHTML = `
+        <article class="producto detalle-producto">
+
+            <img src="${producto.imagen}"
+                 alt="${producto.nombre}"
+                 class="producto-imagen">
+
+            <div class="producto-info">
+
+                <p class="categoria-producto">
+                    ${producto.categoria}
+                </p>
+
+                <h3>${producto.nombre}</h3>
+
+                <p>
+                    ${producto.descripcion}
+                </p>
+
+                <p class="precio">
+                    $${producto.precio.toLocaleString("es-CL")}
+                </p>
+
+                <p>
+                    Stock disponible: ${producto.stock}
+                </p>
+
+                <button class="boton-carrito">
+                    Agregar al carrito
+                </button>
+
+                <a href="productos.html"
+                   class="btn btn-light mt-2">
+
+                    Volver a productos
+
+                </a>
+
+            </div>
+
+        </article>
+    `;
 }
 
 // ==========================================
@@ -363,8 +541,9 @@ function mostrarVista(vista) {
 document.addEventListener("DOMContentLoaded", function () {
 
     mostrarProductos();
-    mostrarCarrito();
     mostrarProductosInicio();
+    mostrarDetalleProducto();
+    mostrarCarrito();
 
     document.addEventListener("click", function (e) {
         if (e.target && e.target.classList.contains("boton-carrito")) {
@@ -976,6 +1155,113 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+// ==========================================
+// FORMULARIO DE CONTACTO
+// ==========================================
+
+const formContacto = document.getElementById('form-contacto');
+
+if (formContacto) {
+
+  formContacto.addEventListener('submit', (e) => {
+
+    e.preventDefault();
+
+    let valido = true;
+
+    const nombre =
+      document.getElementById('contactoNombre');
+
+    const correo =
+      document.getElementById('contactoCorreo');
+
+    const comentario =
+      document.getElementById('contactoComentario');
+
+
+    // Validar nombre
+    if (
+      nombre.value.trim() === '' ||
+      nombre.value.length > 100
+    ) {
+
+      nombre.classList.add('is-invalid');
+      valido = false;
+
+    } else {
+
+      nombre.classList.remove('is-invalid');
+      nombre.classList.add('is-valid');
+
+    }
+
+
+    // Validar correo
+    const correoIngresado =
+      correo.value.trim().toLowerCase();
+
+    const dominiosPermitidos = [
+      '@duoc.cl',
+      '@profesor.duoc.cl',
+      '@gmail.com'
+    ];
+
+    const dominioValido =
+      dominiosPermitidos.some(
+        dominio => correoIngresado.endsWith(dominio)
+      );
+
+
+    if (
+      correoIngresado !== '' &&
+      (
+        correoIngresado.length > 100 ||
+        !dominioValido
+      )
+    ) {
+
+      correo.classList.add('is-invalid');
+      valido = false;
+
+    } else {
+
+      correo.classList.remove('is-invalid');
+
+    }
+
+
+    // Validar comentario
+    if (
+      comentario.value.trim() === '' ||
+      comentario.value.length > 500
+    ) {
+
+      comentario.classList.add('is-invalid');
+      valido = false;
+
+    } else {
+
+      comentario.classList.remove('is-invalid');
+      comentario.classList.add('is-valid');
+
+    }
+
+
+    if (valido) {
+
+      alert('Mensaje enviado correctamente.');
+
+      formContacto.reset();
+
+      nombre.classList.remove('is-valid');
+      comentario.classList.remove('is-valid');
+
+    }
+
+  });
+
+}
+  
   // ==========================================
   // 3. RECUPERACIÓN DE CONTRASEÑA
   // ==========================================
