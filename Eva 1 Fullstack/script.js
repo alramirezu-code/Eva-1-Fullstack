@@ -1612,6 +1612,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const telefono = document.getElementById('telefono');
       const region = document.getElementById('region');
       const comuna = document.getElementById('comuna');
+      const direccion = document.getElementById('direccion');
       const clave = document.getElementById('RegistrarClave');
       const confirmarClave = document.getElementById('confirmarClave');
 
@@ -1701,9 +1702,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
+      // Validar dirección
+        if (
+            direccion.value.trim() === '' ||
+            direccion.value.length > 300
+        ) {
+            direccion.classList.add('is-invalid');
+            valido = false;
+        } else {
+            direccion.classList.remove('is-invalid');
+            direccion.classList.add('is-valid');
+        }
+
       // Validar Contraseña
       if (clave) {
-        if (!clave.value.trim()) {
+        if (clave.value.length < 4 || clave.value.length > 10) {
           clave.classList.add('is-invalid');
           valido = false;
         } else {
