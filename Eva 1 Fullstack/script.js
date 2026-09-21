@@ -385,9 +385,472 @@ function vaciarCarrito() {
 }
 
 function finalizarCompra() {
+    const carrito = obtenerCarrito();
+
+    if (carrito.length === 0) {
+        alert("Tu carrito está vacío.");
+        return;
+    }
+
+    // Guardar la orden para que aparezca en el panel de administración
+    const usuario = obtenerUsuarioActivo();
+    const ordenes = obtenerOrdenes();
+
+    ordenes.push({
+        id: "ORD-" + String(ordenes.length + 1).padStart(4, "0"),
+        fecha: new Date().toLocaleString("es-CL"),
+        cliente: usuario ? usuario.nombre : "Invitado",
+        correo: usuario ? usuario.correo : "-",
+        estado: "Pendiente",
+        total: carrito.reduce((acc, p) => acc + p.precio * p.cantidad, 0),
+        productos: carrito
+    });
+
+    localStorage.setItem("ordenes", JSON.stringify(ordenes));
+
     alert("¡Gracias por tu compra!");
     localStorage.removeItem("carrito");
     mostrarCarrito();
+}
+
+// ==========================================
+// ADMIN: ÓRDENES
+// ==========================================
+function obtenerOrdenes() {
+    try {
+        return JSON.parse(localStorage.getItem("ordenes")) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function listarOrdenes() {
+    const cuerpo = document.getElementById("tbody-ordenes");
+    if (!cuerpo) return;
+
+    const ordenes = obtenerOrdenes();
+    cuerpo.innerHTML = "";
+
+    if (ordenes.length === 0) {
+        cuerpo.innerHTML = `<tr><td colspan="6" class="text-center">Aún no hay órdenes registradas.</td></tr>`;
+        return;
+    }
+
+    // Las más recientes primero
+    ordenes.slice().reverse().forEach(o => {
+        cuerpo.innerHTML += `
+            <tr>
+                <td>${o.id}</td>
+                <td>${o.fecha}</td>
+                <td>${o.cliente}</td>
+                <td>$${o.total.toLocaleString("es-CL")}</td>
+                <td><span class="badge bg-warning text-dark">${o.estado}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-primary" onclick="verDetalleOrden('${o.id}')">Ver detalle</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function verDetalleOrden(id) {
+    const orden = obtenerOrdenes().find(o => o.id === id);
+    if (!orden) return;
+
+    const filas = orden.productos.map(p => `
+        <tr>
+            <td>${p.nombre}</td>
+            <td>$${p.precio.toLocaleString("es-CL")}</td>
+            <td>${p.cantidad}</td>
+            <td>$${(p.precio * p.cantidad).toLocaleString("es-CL")}</td>
+        </tr>
+    `).join("");
+
+    document.getElementById("detalle-orden-contenido").innerHTML = `
+        <h2>Orden ${orden.id}</h2>
+        <p><strong>Fecha:</strong> ${orden.fecha}</p>
+        <p><strong>Cliente:</strong> ${orden.cliente} (${orden.correo})</p>
+        <p><strong>Estado:</strong> ${orden.estado}</p>
+
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>${filas}</tbody>
+            </table>
+        </div>
+
+        <h4 class="text-end">Total: $${orden.total.toLocaleString("es-CL")}</h4>
+    `;
+
+    document.getElementById("vista-lista-ordenes").classList.add("d-none");
+    document.getElementById("vista-detalle-orden").classList.remove("d-none");
+}
+
+function volverListaOrdenes() {
+    document.getElementById("vista-detalle-orden").classList.add("d-none");
+    document.getElementById("vista-lista-ordenes").classList.remove("d-none");
+}
+
+// Botón "Órdenes" del menú: muestra siempre la lista actualizada
+function mostrarOrdenes() {
+    listarOrdenes();
+    volverListaOrdenes();
+    mostrarSeccionAdmin("ordenes");
+}
+
+// ==========================================
+// PANEL DE ADMINISTRADOR
+// ==========================================
+
+function listarUsuarios() {
+
+    const cuerpo = document.getElementById("tbody-usuarios");
+    if (!cuerpo) return;
+
+    const usuarios = obtenerUsuarios();
+    cuerpo.innerHTML = "";
+
+    usuarios.forEach((u, i) => {
+
+        cuerpo.innerHTML += `
+            <tr>
+                <td>${u.run || "-"}</td>
+                <td>${u.nombre}</td>
+                <td>${u.correo}</td>
+                <td>${u.rol}</td>
+                <td>${u.region ? u.region + " / " + u.comuna : "-"}</td>
+
+                <td>
+                    <button class="btn btn-warning btn-sm"
+                        onclick="editarUsuario(${i})">
+                        Editar
+                    </button>
+
+                    <button class="btn btn-danger btn-sm"
+                        onclick="eliminarUsuario(${i})">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+let usuarioEditando = -1;
+
+function cargarComunasAdmin(comunaActual = "") {
+
+    const region = document.getElementById("admUsuario-region");
+    const comuna = document.getElementById("admUsuario-comuna");
+
+    comuna.innerHTML =
+        '<option value="">-- Seleccione comuna --</option>';
+
+    const lista = comunasPorRegion[region.value] || [];
+
+    lista.forEach(nombre => {
+
+        const option = document.createElement("option");
+
+        option.value = nombre.toLowerCase();
+        option.textContent = nombre;
+
+        comuna.appendChild(option);
+    });
+
+    comuna.disabled = lista.length === 0;
+
+    if (comunaActual) {
+        comuna.value = comunaActual.toLowerCase();
+    }
+}
+
+
+function nuevoUsuarioAdmin() {
+
+    usuarioEditando = -1;
+
+    const form =
+        document.getElementById("formUsuarioAdmin");
+
+    form.reset();
+
+    document.getElementById(
+        "admUsuario-comuna"
+    ).disabled = true;
+
+    mostrarSeccionAdmin("nuevo-usuario");
+}
+
+function editarUsuario(i) {
+
+    const usuarios = obtenerUsuarios();
+    const u = usuarios[i];
+
+    if (!u) return;
+
+    usuarioEditando = i;
+
+    document.getElementById("admUsuario-run").value =
+        u.run || "";
+
+    document.getElementById("admUsuario-nombre").value =
+        u.nombre || "";
+
+    document.getElementById("admUsuario-apellidos").value =
+        u.apellidos || "";
+
+    document.getElementById("admUsuario-correo").value =
+        u.correo || "";
+
+    document.getElementById("admUsuario-clave").value =
+        u.clave || "";
+
+    document.getElementById("admUsuario-rol").value =
+        u.rol || "";
+
+    mostrarSeccionAdmin("nuevo-usuario");
+}
+
+
+function eliminarUsuario(i) {
+
+    let usuarios = obtenerUsuarios();
+    const activo = obtenerUsuarioActivo();
+
+    if (usuarios[i].correo === activo.correo) {
+        alert("No puedes eliminar tu propio usuario.");
+        return;
+    }
+
+    if (!confirm("¿Eliminar este usuario?")) return;
+
+    usuarios.splice(i, 1);
+
+    guardarUsuarios(usuarios);
+    listarUsuarios();
+}
+
+function listarProductos() {
+    const cuerpo = document.getElementById("tbody-productos");
+    if (!cuerpo) return;
+
+    const usuario = obtenerUsuarioActivo();
+    const esAdmin = usuario && usuario.rol === "Administrador";
+
+    cuerpo.innerHTML = "";
+
+    // Devuelve el HTML de una fila (editable = creado desde el admin)
+    function fila(p, editable) {
+        const critico = p.stock <= p.stockCritico
+            ? ` <span class="badge bg-warning text-dark">Stock crítico</span>`
+            : "";
+
+        let acciones = "";
+        if (esAdmin) {
+            acciones = editable
+                ? `<td>
+                       <button class="btn btn-sm btn-warning" data-accion="editar" data-codigo="${p.codigo}">Editar</button>
+                       <button class="btn btn-sm btn-danger" data-accion="eliminar" data-codigo="${p.codigo}">Eliminar</button>
+                   </td>`
+                : `<td><span class="text-muted small">Predeterminado</span></td>`;
+        }
+
+        return `
+            <tr>
+                <td>${p.codigo}</td>
+                <td>${p.nombre}</td>
+                <td>${p.categoria}</td>
+                <td>$${Number(p.precio).toLocaleString("es-CL")}</td>
+                <td>${p.stock}${critico}</td>
+                ${acciones}
+            </tr>
+        `;
+    }
+
+    productosFijos.forEach(p => cuerpo.innerHTML += fila(p, false));
+    productos.forEach(p => cuerpo.innerHTML += fila(p, true));
+}
+
+// ==========================================
+// ADMIN: AGREGAR, EDITAR Y ELIMINAR PRODUCTOS
+// ==========================================
+
+// Reglas de validación según el anexo (devuelven "" si el valor es correcto)
+const reglasProductoAdmin = {
+    codigo: function (v) {
+        const editando = document.getElementById("adm-editando").value;
+        if (v === "") return "El código es obligatorio.";
+        if (v.length < 3) return "El código debe tener al menos 3 caracteres.";
+        const repetido = productosFijos.concat(productos).some(
+            p => p.codigo.toLowerCase() === v.toLowerCase() && p.codigo !== editando
+        );
+        if (repetido) return "Ya existe un producto con este código.";
+        return "";
+    },
+    nombre: v => v === "" ? "El nombre es obligatorio."
+               : v.length > 100 ? "Máximo 100 caracteres." : "",
+    descripcion: v => v.length > 500 ? "Máximo 500 caracteres." : "",
+    precio: function (v) {
+        if (v === "") return "El precio es obligatorio.";
+        if (isNaN(Number(v)) || Number(v) < 0) return "El precio debe ser un número mayor o igual a 0.";
+        return "";
+    },
+    stock: function (v) {
+        if (v === "") return "El stock es obligatorio.";
+        if (!/^\d+$/.test(v)) return "Debe ser un número entero mayor o igual a 0.";
+        return "";
+    },
+    stockCritico: v => (v !== "" && !/^\d+$/.test(v))
+        ? "Debe ser un número entero mayor o igual a 0." : "",
+    categoria: v => v === "" ? "Seleccione una categoría." : ""
+};
+
+function validarCampoProducto(id) {
+    const campo = document.getElementById("adm-" + id);
+    const error = document.getElementById("error-adm-" + id);
+    const mensaje = reglasProductoAdmin[id](campo.value.trim());
+
+    campo.classList.toggle("is-invalid", mensaje !== "");
+    campo.classList.toggle("is-valid", mensaje === "");
+    error.textContent = mensaje;
+
+    return mensaje === "";
+}
+
+function validarProductoAdmin() {
+    let ok = true;
+    Object.keys(reglasProductoAdmin).forEach(id => {
+        if (!validarCampoProducto(id)) ok = false;
+    });
+    return ok;
+}
+
+// Guarda la lista en localStorage y actualiza el arreglo en memoria
+function guardarProductos(lista) {
+    localStorage.setItem("productos", JSON.stringify(lista));
+    productos.length = 0;
+    productos.push(...lista);
+}
+
+function limpiarFormularioProducto() {
+    const form = document.getElementById("formProductoAdmin");
+    if (!form) return;
+
+    form.reset();
+    form.querySelectorAll(".is-valid, .is-invalid").forEach(c => c.classList.remove("is-valid", "is-invalid"));
+
+    document.getElementById("adm-editando").value = "";
+    document.getElementById("adm-codigo").readOnly = false;
+    document.getElementById("tituloFormProducto").textContent = "Agregar Producto";
+    document.getElementById("btnGuardarProducto").textContent = "Guardar producto";
+    document.getElementById("btnCancelarProducto").classList.add("d-none");
+}
+
+function nuevoProductoAdmin() {
+    limpiarFormularioProducto();
+    mostrarSeccionAdmin("nuevo-producto");
+}
+
+function editarProductoAdmin(codigo) {
+    const p = productos.find(x => x.codigo === codigo);
+    if (!p) return;
+
+    limpiarFormularioProducto();
+
+    document.getElementById("adm-editando").value = p.codigo;
+    document.getElementById("adm-codigo").value = p.codigo;
+    document.getElementById("adm-codigo").readOnly = true; // el código no se cambia al editar
+    document.getElementById("adm-nombre").value = p.nombre;
+    document.getElementById("adm-descripcion").value = p.descripcion || "";
+    document.getElementById("adm-precio").value = p.precio;
+    document.getElementById("adm-stock").value = p.stock;
+    document.getElementById("adm-stockCritico").value = p.stockCritico || "";
+    document.getElementById("adm-categoria").value = p.categoria;
+    document.getElementById("adm-imagen").value = p.imagen || "";
+
+    document.getElementById("tituloFormProducto").textContent = "Editar Producto";
+    document.getElementById("btnGuardarProducto").textContent = "Guardar cambios";
+    document.getElementById("btnCancelarProducto").classList.remove("d-none");
+
+    mostrarSeccionAdmin("nuevo-producto");
+}
+
+function eliminarProductoAdmin(codigo) {
+    if (!confirm("¿Seguro que deseas eliminar el producto " + codigo + "?")) return;
+
+    guardarProductos(productos.filter(p => p.codigo !== codigo));
+    listarProductos();
+}
+
+function guardarProductoAdmin(e) {
+    e.preventDefault();
+
+    if (!validarProductoAdmin()) return;
+
+    const editando = document.getElementById("adm-editando").value;
+    const criticoTexto = document.getElementById("adm-stockCritico").value.trim();
+
+    const producto = {
+        codigo: document.getElementById("adm-codigo").value.trim(),
+        nombre: document.getElementById("adm-nombre").value.trim(),
+        descripcion: document.getElementById("adm-descripcion").value.trim(),
+        precio: Number(document.getElementById("adm-precio").value),
+        stock: Number(document.getElementById("adm-stock").value),
+        stockCritico: criticoTexto === "" ? 0 : Number(criticoTexto),
+        categoria: document.getElementById("adm-categoria").value,
+        imagen: document.getElementById("adm-imagen").value.trim() || "img/producto_default.jpg"
+    };
+
+    const lista = productos.slice();
+
+    if (editando) {
+        const i = lista.findIndex(p => p.codigo === editando);
+        if (i !== -1) lista[i] = producto;
+    } else {
+        lista.push(producto);
+    }
+
+    guardarProductos(lista);
+
+    alert(editando ? "Producto actualizado correctamente." : "Producto agregado correctamente.");
+
+    // Alerta de stock crítico (regla del anexo)
+    if (criticoTexto !== "" && producto.stock <= producto.stockCritico) {
+        alert("⚠️ Atención: el stock de este producto está en nivel crítico.");
+    }
+
+    limpiarFormularioProducto();
+    listarProductos();
+    mostrarSeccionAdmin("productos");
+}
+
+function iniciarAdminProductos() {
+    const form = document.getElementById("formProductoAdmin");
+    if (!form) return;
+
+    form.addEventListener("submit", guardarProductoAdmin);
+
+    // Validación en tiempo real, campo por campo
+    Object.keys(reglasProductoAdmin).forEach(id => {
+        document.getElementById("adm-" + id).addEventListener("input", () => validarCampoProducto(id));
+    });
+
+    // Botones Editar / Eliminar de la tabla
+    document.getElementById("tbody-productos").addEventListener("click", function (e) {
+        const boton = e.target.closest("button[data-accion]");
+        if (!boton) return;
+
+        if (boton.dataset.accion === "editar") editarProductoAdmin(boton.dataset.codigo);
+        if (boton.dataset.accion === "eliminar") eliminarProductoAdmin(boton.dataset.codigo);
+    });
 }
 
 // ==========================================
@@ -501,29 +964,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Función para validar RUN chileno (módulo 11) sin puntos ni guión
 function validarRunChile(run) {
-  const runLimpio = run.replace(/[^0-9kK]/g, '').toUpperCase();
-  if (runLimpio.length < 7 || runLimpio.length > 9) return false;
 
-  const cuerpo = runLimpio.slice(0, -1);
-  const dvIngresado = runLimpio.slice(-1);
+    const runLimpio = run.trim().toUpperCase();
 
-  let suma = 0;
-  let multiplicador = 2;
+    // Solo números y el último carácter puede ser número o K
+    if (!/^[0-9]{6,8}[0-9K]$/.test(runLimpio)) {
+        return false;
+    }
 
-  for (let i = cuerpo.length - 1; i >= 0; i--) {
-    suma += parseInt(cuerpo.charAt(i), 10) * multiplicador;
-    multiplicador = multiplicador === 7 ? 2 : multiplicador + 1;
-  }
+    const cuerpo = runLimpio.slice(0, -1);
+    const dvIngresado = runLimpio.slice(-1);
 
-  const resto = suma % 11;
-  const dvCalculadoNum = 11 - resto;
-  let dvCalculado = '';
+    let suma = 0;
+    let multiplicador = 2;
 
-  if (dvCalculadoNum === 11) dvCalculado = '0';
-  else if (dvCalculadoNum === 10) dvCalculado = 'K';
-  else dvCalculado = dvCalculadoNum.toString();
+    for (let i = cuerpo.length - 1; i >= 0; i--) {
 
-  return dvIngresado === dvCalculado;
+        suma += Number(cuerpo[i]) * multiplicador;
+
+        multiplicador++;
+
+        if (multiplicador > 7) {
+            multiplicador = 2;
+        }
+    }
+
+    const resto = suma % 11;
+    const resultado = 11 - resto;
+
+    let dvCalculado;
+
+    if (resultado === 11) {
+        dvCalculado = "0";
+
+    } else if (resultado === 10) {
+        dvCalculado = "K";
+
+    } else {
+        dvCalculado = resultado.toString();
+    }
+
+    return dvIngresado === dvCalculado;
 }
 
 // ==========================================
@@ -563,6 +1044,29 @@ function crearAdminInicial() {
 
 function obtenerUsuarioActivo() {
     return JSON.parse(localStorage.getItem("usuarioActivo"));
+}
+
+// ==========================================
+// CAMBIAR SECCIONES DEL PANEL ADMIN
+// ==========================================
+
+function mostrarSeccionAdmin(seccion) {
+
+    const secciones =
+        document.querySelectorAll(".admin-seccion");
+
+    secciones.forEach(function (elemento) {
+        elemento.classList.add("d-none");
+    });
+
+
+    const destino =
+        document.getElementById("admin-" + seccion);
+
+
+    if (destino) {
+        destino.classList.remove("d-none");
+    }
 }
 
     // ==========================================
@@ -783,6 +1287,188 @@ document.addEventListener('DOMContentLoaded', () => {
             mostrarProductos();
 
             }
+
+        });
+    }
+
+    // ==========================================
+    // INICIAR PANEL ADMINISTRATIVO
+    // ==========================================
+    const panelAdmin = document.getElementById("adminPanel");
+
+    if (panelAdmin) {
+        const usuario = verificarAcceso(["Administrador", "Vendedor"]);
+
+        if (usuario) {
+            aplicarRestriccionesPorRol();
+            listarUsuarios();
+            listarProductos();
+            iniciarAdminProductos();
+            listarOrdenes();
+
+            const formUsuarioAdmin =
+                document.getElementById("formUsuarioAdmin");
+
+            if (formUsuarioAdmin) {
+
+                formUsuarioAdmin.addEventListener("submit", function (e) {
+
+                    e.preventDefault();
+
+                    const run =
+                        document.getElementById("admUsuario-run")
+                            .value.trim().toUpperCase();
+
+                    const nombre =
+                        document.getElementById("admUsuario-nombre")
+                            .value.trim();
+
+                    const apellidos =
+                        document.getElementById("admUsuario-apellidos")
+                            .value.trim();
+
+
+                    const correo =
+                        document.getElementById("admUsuario-correo")
+                            .value.trim().toLowerCase();
+
+                    const clave =
+                        document.getElementById("admUsuario-clave")
+                            .value;
+
+                    const rol =
+                        document.getElementById("admUsuario-rol")
+                            .value;
+
+                    
+
+                    if (!validarRunChile(run)) {
+
+                        alert("RUN inválido.");
+                        return;
+                    }
+
+
+                    if (
+                        nombre === "" ||
+                        nombre.length > 50 ||
+                        correo === "" ||
+                        correo.length > 100 ||
+                        clave === "" ||
+                        rol === ""
+                    ) {
+
+                        alert("Revisa los campos: nombre máximo 50 caracteres y correo máximo 100.");
+                        return;
+                    }
+
+
+                    const dominiosPermitidos = [
+                        "@duoc.cl",
+                        "@profesor.duoc.cl",
+                        "@gmail.com"
+                    ];
+
+
+                    const correoValido =
+                        dominiosPermitidos.some(
+                            dominio => correo.endsWith(dominio)
+                        );
+
+
+                    if (!correoValido) {
+
+                        alert("Correo no permitido.");
+                        return;
+                    }
+
+
+                    if (
+                        clave.length < 4 ||
+                        clave.length > 10
+                    ) {
+
+                        alert(
+                            "La contraseña debe tener entre 4 y 10 caracteres."
+                        );
+
+                        return;
+                    }
+
+
+                    let usuarios =
+                        obtenerUsuarios();
+
+
+                    const existe = usuarios.some(
+                        (u, i) =>
+                            i !== usuarioEditando &&
+                            (
+                                u.correo.toLowerCase() === correo ||
+                                u.run === run
+                            )
+                    );
+
+
+                    if (existe) {
+
+                        alert(
+                            "El RUN o correo ya está registrado."
+                        );
+
+                        return;
+                    }
+
+
+                    const nuevoUsuario = {
+
+                        run: run,
+                        nombre: nombre,
+                        apellidos: apellidos,
+                        correo: correo,
+                        clave: clave,
+                        rol: rol,
+                        region: "",
+                        comuna: ""
+
+                    };
+
+
+                    if (usuarioEditando === -1) {
+                        usuarios.push(nuevoUsuario);
+                    } else {
+
+                        usuarios[usuarioEditando] = nuevoUsuario;
+                        usuarioEditando = -1;
+                    }
+
+                    guardarUsuarios(usuarios);
+
+                    alert("Usuario agregado correctamente.");
+
+                    formUsuarioAdmin.reset();
+
+                    document.getElementById("admUsuario-comuna").disabled = true;
+
+                    listarUsuarios();
+
+                    mostrarSeccionAdmin("usuarios");
+
+                });
+
+            }
+
+            mostrarSeccionAdmin(usuario.rol === "Vendedor" ? "productos" : "inicio");
+        }
+    }
+
+    // CERRAR SESIÓN
+    const btnCerrarSesion = document.getElementById("btnCerrarSesion");
+
+    if (btnCerrarSesion) {
+        btnCerrarSesion.addEventListener("click", function () {
+            localStorage.removeItem("usuarioActivo");
+            window.location.href = "inicio sesion.html";
         });
     }
 
@@ -910,18 +1596,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const confirmarClave = document.getElementById('confirmarClave');
 
       // Validar RUN
-      const valRun = run ? run.value.trim().toUpperCase() : '';
-      const formatoRunValido = /^[0-9]{6,8}[0-9K]$/.test(valRun);
+        const valRun = run.value.trim().toUpperCase();
 
-      if (run) {
-        if (!valRun || !formatoRunValido || !validarRunChile(valRun)) {
-          run.classList.add('is-invalid');
-          valido = false;
+        if (!validarRunChile(valRun)) {
+
+            run.classList.add('is-invalid');
+            run.classList.remove('is-valid');
+
+            valido = false;
+
         } else {
-          run.classList.remove('is-invalid');
-          run.classList.add('is-valid');
+
+            run.classList.remove('is-invalid');
+            run.classList.add('is-valid');
         }
-      }
 
       // Validar Nombre
       if (nombre) {
@@ -1014,6 +1702,10 @@ document.addEventListener('DOMContentLoaded', () => {
           confirmarClave.classList.add('is-valid');
         }
       }
+
+      if (!valido) {
+            return;
+        }
 
         if (valido) {
 

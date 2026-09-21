@@ -345,3 +345,71 @@ button:hover {
     height: 220px;
     object-fit: cover;
 }
+
+/* ==========================================
+   PANEL ADMINISTRATIVO
+   ========================================== */
+
+.admin-layout {
+    min-height: 100vh;
+    display: flex;
+}
+
+.admin-sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background-color: #212529;
+    color: white;
+    padding: 25px;
+}
+
+.admin-sidebar .nav-link {
+    color: white;
+    margin-bottom: 10px;
+    border: none;
+    background: transparent;
+}
+
+.admin-sidebar .nav-link:hover {
+    background-color: #6b46ef;
+    color: white;
+}
+
+.admin-contenido {
+    flex: 1;
+    padding: 40px;
+    background-color: #f4f4f4;
+    color: #212529;
+}
+
+.admin-contenido h1,
+.admin-contenido h2,
+.admin-contenido h3 {
+    color: #212529;
+}
+
+.admin-seccion {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+#lista-usuarios table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+#lista-usuarios td,
+#lista-usuarios th {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+#lista-usuarios th:last-child,
+#lista-usuarios td:last-child {
+    width: 110px;
+}
+
+#lista-usuarios td:last-child .btn {
+    margin-bottom: 4px;
+}
