@@ -1311,6 +1311,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (formUsuarioAdmin) {
 
+                const regionAdmin =
+                    document.getElementById("admUsuario-region");
+
+                regionAdmin.addEventListener("change", function () {
+                    cargarComunasAdmin();
+                });
+
+
                 formUsuarioAdmin.addEventListener("submit", function (e) {
 
                     e.preventDefault();
@@ -1327,10 +1335,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.getElementById("admUsuario-apellidos")
                             .value.trim();
 
-
                     const correo =
                         document.getElementById("admUsuario-correo")
                             .value.trim().toLowerCase();
+
+                    const fechaNacimiento =
+                        document.getElementById("admUsuario-fecha")
+                            .value;
+
+                    const region =
+                        document.getElementById("admUsuario-region")
+                            .value;
+
+                    const comuna =
+                        document.getElementById("admUsuario-comuna")
+                            .value;
+
+                    const direccion =
+                        document.getElementById("admUsuario-direccion")
+                            .value.trim();
 
                     const clave =
                         document.getElementById("admUsuario-clave")
@@ -1340,28 +1363,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         document.getElementById("admUsuario-rol")
                             .value;
 
-                    
 
                     if (!validarRunChile(run)) {
-
                         alert("RUN inválido.");
                         return;
                     }
 
-
-                    if (
-                        nombre === "" ||
-                        nombre.length > 50 ||
-                        correo === "" ||
-                        correo.length > 100 ||
-                        clave === "" ||
-                        rol === ""
-                    ) {
-
-                        alert("Revisa los campos: nombre máximo 50 caracteres y correo máximo 100.");
+                    if (nombre === "" || nombre.length > 50) {
+                        alert("Nombre obligatorio, máximo 50 caracteres.");
                         return;
                     }
 
+                    if (apellidos === "" || apellidos.length > 100) {
+                        alert("Apellidos obligatorios, máximo 100 caracteres.");
+                        return;
+                    }
 
                     const dominiosPermitidos = [
                         "@duoc.cl",
@@ -1369,36 +1385,37 @@ document.addEventListener('DOMContentLoaded', () => {
                         "@gmail.com"
                     ];
 
-
-                    const correoValido =
-                        dominiosPermitidos.some(
-                            dominio => correo.endsWith(dominio)
-                        );
-
-
-                    if (!correoValido) {
-
-                        alert("Correo no permitido.");
-                        return;
-                    }
-
-
                     if (
-                        clave.length < 4 ||
-                        clave.length > 10
+                        correo === "" ||
+                        correo.length > 100 ||
+                        !dominiosPermitidos.some(d => correo.endsWith(d))
                     ) {
+                        alert("Correo inválido.");
+                        return;
+                    }
 
-                        alert(
-                            "La contraseña debe tener entre 4 y 10 caracteres."
-                        );
+                    if (region === "" || comuna === "") {
+                        alert("Selecciona región y comuna.");
+                        return;
+                    }
 
+                    if (direccion === "" || direccion.length > 300) {
+                        alert("Dirección obligatoria, máximo 300 caracteres.");
+                        return;
+                    }
+
+                    if (clave.length < 4 || clave.length > 10) {
+                        alert("La contraseña debe tener entre 4 y 10 caracteres.");
+                        return;
+                    }
+
+                    if (rol === "") {
+                        alert("Selecciona un rol.");
                         return;
                     }
 
 
-                    let usuarios =
-                        obtenerUsuarios();
-
+                    let usuarios = obtenerUsuarios();
 
                     const existe = usuarios.some(
                         (u, i) =>
@@ -1409,46 +1426,49 @@ document.addEventListener('DOMContentLoaded', () => {
                             )
                     );
 
-
                     if (existe) {
-
-                        alert(
-                            "El RUN o correo ya está registrado."
-                        );
-
+                        alert("El RUN o correo ya está registrado.");
                         return;
                     }
 
 
                     const nuevoUsuario = {
-
                         run: run,
                         nombre: nombre,
                         apellidos: apellidos,
                         correo: correo,
+                        fechaNacimiento: fechaNacimiento,
+                        region: region,
+                        comuna: comuna,
+                        direccion: direccion,
                         clave: clave,
-                        rol: rol,
-                        region: "",
-                        comuna: ""
-
+                        rol: rol
                     };
 
 
-                    if (usuarioEditando === -1) {
-                        usuarios.push(nuevoUsuario);
-                    } else {
+                    const esEdicion = usuarioEditando !== -1;
 
+                    if (esEdicion) {
                         usuarios[usuarioEditando] = nuevoUsuario;
-                        usuarioEditando = -1;
+                    } else {
+                        usuarios.push(nuevoUsuario);
                     }
 
                     guardarUsuarios(usuarios);
 
-                    alert("Usuario agregado correctamente.");
+                    usuarioEditando = -1;
+
+                    alert(
+                        esEdicion
+                            ? "Usuario actualizado correctamente."
+                            : "Usuario agregado correctamente."
+                    );
 
                     formUsuarioAdmin.reset();
 
-                    document.getElementById("admUsuario-comuna").disabled = true;
+                    document.getElementById(
+                        "admUsuario-comuna"
+                    ).disabled = true;
 
                     listarUsuarios();
 

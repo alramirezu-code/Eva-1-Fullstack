@@ -237,7 +237,7 @@
 
                     <button
                         class="btn btn-primary"
-                        onclick="nuevoUsuarioAdmin()">
+                        onclick="mostrarSeccionAdmin('nuevo-usuario')">
 
                         + Nuevo usuario
 
@@ -276,171 +276,110 @@
 
                 <h2>Nuevo Usuario</h2>
 
-                <form id="formUsuarioAdmin">
+            <form id="formUsuarioAdmin">
 
-                    
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            RUN
-                        </label>
-
-                    <input
-                        type="text"
-                        id="admUsuario-run"
+                <div class="mb-3">
+                    <label class="form-label">RUN *</label>
+                    <input type="text" id="admUsuario-run"
                         class="form-control"
-                        minlength="7"
-                        maxlength="9">
+                        minlength="7" maxlength="9">
+                </div>
 
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Nombre *</label>
+                    <input type="text" id="admUsuario-nombre"
+                        class="form-control"
+                        maxlength="50">
+                </div>
 
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Nombre
-                        </label>
-
-                        <input
-                            type="text"
-                            id="admUsuario-nombre"
-                            class="form-control"
-                            maxlength="50">
-
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Apellidos</label>
-                        <input type="text"
-                            id="admUsuario-apellidos"
-                            class="form-control"
-                            maxlength="100">
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Correo
-                        </label>
-
-                    <input
-                        type="email"
-                        id="admUsuario-correo"
+                <div class="mb-3">
+                    <label class="form-label">Apellidos *</label>
+                    <input type="text" id="admUsuario-apellidos"
                         class="form-control"
                         maxlength="100">
+                </div>
 
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Correo *</label>
+                    <input type="email" id="admUsuario-correo"
+                        class="form-control"
+                        maxlength="100">
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Fecha de nacimiento</label>
-                        <input type="date"
-                            id="admUsuario-fecha"
-                            class="form-control">
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Fecha de nacimiento</label>
+                    <input type="date"
+                        id="admUsuario-fecha"
+                        class="form-control">
+                </div>
 
-                    <div class="row">
+                <div class="mb-3">
+                    <label class="form-label">Región *</label>
 
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Región</label>
+                    <select id="admUsuario-region" class="form-select">
+                        <option value="">-- Seleccione región --</option>
+                        <option value="RM">Región Metropolitana</option>
+                        <option value="ARAUCANIA">Araucanía</option>
+                        <option value="NUBLE">Ñuble</option>
+                    </select>
+                </div>
 
-                            <select id="admUsuario-region"
-                                    class="form-select">
+                <div class="mb-3">
+                    <label class="form-label">Comuna *</label>
 
-                                <option value="">-- Seleccione región --</option>
-                                <option value="RM">Región Metropolitana</option>
-                                <option value="ARAUCANIA">Región de la Araucanía</option>
-                                <option value="NUBLE">Región de Ñuble</option>
+                    <select id="admUsuario-comuna"
+                            class="form-select"
+                            disabled>
 
-                            </select>
-                        </div>
+                        <option value="">-- Seleccione comuna --</option>
 
-                        <div class="col-md-6 mb-3">
+                    </select>
+                </div>
 
-                            <label class="form-label">Comuna</label>
+                <div class="mb-3">
+                    <label class="form-label">Dirección *</label>
 
-                            <select id="admUsuario-comuna"
-                                    class="form-select"
-                                    disabled>
+                    <input type="text"
+                        id="admUsuario-direccion"
+                        class="form-control"
+                        maxlength="300">
+                </div>
 
-                                <option value="">-- Seleccione comuna --</option>
+                <div class="mb-3">
+                    <label class="form-label">Contraseña *</label>
 
-                            </select>
+                    <input type="password"
+                        id="admUsuario-clave"
+                        class="form-control"
+                        minlength="4"
+                        maxlength="10">
+                </div>
 
-                        </div>
+                <div class="mb-3">
+                    <label class="form-label">Rol *</label>
 
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Dirección</label>
-
-                        <input type="text"
-                            id="admUsuario-direccion"
-                            class="form-control"
-                            maxlength="300">
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Contraseña
-                        </label>
-
-                        <input
-                            type="password"
-                            id="admUsuario-clave"
-                            class="form-control"
-                            minlength="4"
-                            maxlength="10">
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Rol
-                        </label>
-
-                        <select
-                            id="admUsuario-rol"
+                    <select id="admUsuario-rol"
                             class="form-select">
 
-                            <option value="">
-                                -- Seleccione rol --
-                            </option>
+                        <option value="">-- Seleccione rol --</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Cliente">Cliente</option>
+                        <option value="Vendedor">Vendedor</option>
 
-                            <option value="Administrador">
-                                Administrador
-                            </option>
+                    </select>
+                </div>
 
-                            <option value="Cliente">
-                                Cliente
-                            </option>
+                <button type="submit" class="btn btn-primary">
+                    Guardar usuario
+                </button>
 
-                            <option value="Vendedor">
-                                Vendedor
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary">
-
-                        Guardar usuario
-
-                    </button>
-
-                    <button
-                        type="button"
+                <button type="button"
                         class="btn btn-secondary"
-                        onclick="nuevoUsuarioAdmin()">
+                        onclick="mostrarSeccionAdmin('usuarios')">
+                    Cancelar
+                </button>
 
-                        Cancelar
-
-                    </button>
-
-                </form>
+            </form>
 
             </section>
         </main>
