@@ -34,7 +34,7 @@
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search"/>
+                    <input class="form-control me-2" type="search" id="filtroproductos" onkeyup="filtrarbusqueda()" placeholder="Buscar..." aria-label="Search"/>
                     <button class="btn btn-outline-success" type="submit">Buscar</button>
                 </form>
             </div>
@@ -46,6 +46,14 @@
         <div id="toast-notificacion" class="toast-oculto">
             <span id="toast-icono">🛒</span>
             <span id="toast-mensaje">Producto agregado al carrito</span>
+        </div>
+
+        <!-- Control buttons -->
+        <div id="myBtnContainer">
+            <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+            <button class="btn" onclick="filterSelection('herramientas')"> Herramientas</button>
+            <button class="btn" onclick="filterSelection('materiales')"> Materiales</button>
+            <button class="btn" onclick="filterSelection('adhesivos')"> Adhesivos</button>
         </div>
 
         <h2>Catálogo de productos</h2>
@@ -65,6 +73,7 @@
         </section>
 
     </main>
+
 
     <footer id="datosPlaceholder" class="bg-dark text-white p-4 mt-5">
         <div class="container text-center text-md-start">

@@ -162,6 +162,8 @@ function mostrarProductos() {
     });
 }
 
+
+
 // ==========================================
 // MOSTRAR DETALLE DEL PRODUCTO
 // ==========================================
@@ -679,6 +681,8 @@ function listarProductos() {
     productos.forEach(p => cuerpo.innerHTML += fila(p, true));
 }
 
+
+
 // ==========================================
 // ADMIN: AGREGAR, EDITAR Y ELIMINAR PRODUCTOS
 // ==========================================
@@ -851,6 +855,12 @@ function iniciarAdminProductos() {
         if (boton.dataset.accion === "editar") editarProductoAdmin(boton.dataset.codigo);
         if (boton.dataset.accion === "eliminar") eliminarProductoAdmin(boton.dataset.codigo);
     });
+}
+
+function verificarStock(s){
+    if (productos.forEach(s).stock < stockCritico){
+        document.getElementById("stockwarning").textContent = "Alerta, el stock de este producto esta en punto critico";
+    } 
 }
 
 // ==========================================
@@ -1899,7 +1909,7 @@ if (formContacto) {
 }
   
   // ==========================================
-  // 3. RECUPERACIÓN DE CONTRASEÑA
+  // RECUPERACIÓN DE CONTRASEÑA
   // ==========================================
 
   const formRecuperar = document.getElementById('form-recuperar');
